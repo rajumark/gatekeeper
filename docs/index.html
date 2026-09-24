@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gatekeeper — on-device toxic message detection for Android</title>
+<meta name="description" content="Gatekeeper detects toxic messages (abuse, hate, threats, sexual harassment) on-device in English, Hindi, Tamil, Telugu, Malayalam, Kannada and Hinglish. ~4 MB, no dependencies, no network. Free, Apache-2.0.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22><rect x=%221%22 y=%221%22 width=%2222%22 height=%2222%22 rx=%227%22 fill=%22%233b5bdb%22/><path d=%22M12 5.5 7 7.5v3.8c0 3 2.1 5.4 5 6.4 2.9-1 5-3.4 5-6.4V7.5Z%22 fill=%22%23fff%22/></svg>"><rect x=%221%22 y=%221%22 width=%2222%22 height=%2222%22 rx=%227%22 fill=%22%233b5bdb%22/><path d=%22M5.5 8.5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-4l-2.5 2v-2a1.5 1.5 0 0 1-1.5-1.5Z%22 fill=%22%23fff%22/></svg>">
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg-subtle: #f5f5f7;
+    --text: #1d1d1f;
+    --text-secondary: #6e6e73;
+    --border: #d2d2d7;
+    --accent: #3b5bdb;
+    --accent-hover: #2f4ac1;
+    --code-bg: #f5f5f7;
+    --code-text: #1d1d1f;
+    --card-bg: #ffffff;
+    --nav-bg: rgba(255, 255, 255, 0.8);
+    --pill-bg: #f5f5f7;
+    --syn-comment: #6e7781;
+    --syn-keyword: #cf222e;
+    --syn-string: #0a3069;
+    --syn-number: #0550ae;
+    --syn-function: #8250df;
+    --syn-type: #953800;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #000000;
+      --bg-subtle: #1d1d1f;
+      --text: #f5f5f7;
+      --text-secondary: #a1a1a6;
+      --border: #424245;
+      --accent: #5c7cfa;
+      --accent-hover: #748ffc;
+      --code-bg: #1d1d1f;
+      --code-text: #f5f5f7;
+      --card-bg: #1d1d1f;
+      --nav-bg: rgba(0, 0, 0, 0.8);
+      --pill-bg: #2c2c2e;
+      --syn-comment: #8b949e;
+      --syn-keyword: #ff7b72;
+      --syn-string: #a5d6ff;
+      --syn-number: #79c0ff;
+      --syn-function: #d2a8ff;
+      --syn-type: #ffa657;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #000000;
+    --bg-subtle: #1d1d1f;
+    --text: #f5f5f7;
+    --text-secondary: #a1a1a6;
+    --border: #424245;
+    --accent: #5c7cfa;
+    --accent-hover: #748ffc;
+    --code-bg: #1d1d1f;
+    --code-text: #f5f5f7;
+    --card-bg: #1d1d1f;
+    --nav-bg: rgba(0, 0, 0, 0.8);
+    --pill-bg: #2c2c2e;
+    --syn-comment: #8b949e;
+    --syn-keyword: #ff7b72;
+    --syn-string: #a5d6ff;
+    --syn-number: #79c0ff;
+    --syn-function: #d2a8ff;
+    --syn-type: #ffa657;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { color: var(--accent-hover); }
+
+  /* Nav */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--nav-bg);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    max-width: 980px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 22px; height: 48px;
+    font-size: 14px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 8px; font-weight: 600; color: var(--text); }
+  .nav-links { display: flex; gap: 28px; }
+  .nav-links a { color: var(--text); font-size: 12px; opacity: 0.85; }
+  .nav-links a:hover { opacity: 1; }
+  .nav-cta {
+    font-size: 12px; padding: 6px 14px; border-radius: 980px;
+    background: var(--accent); color: #fff !important; opacity: 1 !important;
+  }
+  .nav-cta:hover { background: var(--accent-hover); }
+
+  /* Hero */
+  .hero {
+    max-width: 980px; margin: 0 auto;
+    padding: 90px 22px 60px;
+    text-align: center;
+  }
+  .hero .eyebrow {
+    font-size: 17px; font-weight: 600; color: var(--accent); margin-bottom: 8px;
+  }
+  .hero h1 {
+    font-size: clamp(40px, 7vw, 64px);
+    font-weight: 700; letter-spacing: -0.015em;
+    margin: 0 0 12px; line-height: 1.05;
+  }
+  .hero p.tagline {
+    font-size: clamp(19px, 3vw, 24px);
+    color: var(--text-secondary);
+    max-width: 640px; margin: 0 auto 32px;
+    font-weight: 400;
+  }
+  .hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
+  .hero-trust { font-size: 13px; color: var(--text-secondary); text-align: center; margin: 0 0 48px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 11px 22px; border-radius: 980px; font-size: 15px; font-weight: 400;
+    border: 1px solid transparent; cursor: pointer;
+  }
+  .btn-primary { background: var(--accent); color: #fff !important; }
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn-secondary { background: transparent; color: var(--accent) !important; border-color: var(--accent); }
+  .btn-secondary:hover { background: var(--accent); color: #fff !important; }
+
+  .hero-demo {
+    background: var(--bg-subtle);
+    border-radius: 18px;
+    padding: 28px;
+    text-align: left;
+    max-width: 640px; margin: 0 auto;
+    border: 1px solid var(--border);
+    transition: opacity 0.35s ease;
+  }
+  .hero-demo.is-fading { opacity: 0; }
+  .hero-demo .prompt { color: var(--text-secondary); font-size: 13px; margin-bottom: 10px; }
+  .hero-demo .input-row {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px;
+    padding: 10px 14px; font-size: 15px; margin-bottom: 14px;
+  }
+  .emoji-row { display: flex; gap: 10px; flex-wrap: wrap; font-size: 28px; }
+  .emoji-row span { transition: transform 0.15s; }
+
+  /* Sections */
+  section { max-width: 980px; margin: 0 auto; padding: 70px 22px; border-top: 1px solid var(--border); }
+  section:first-of-type { border-top: none; }
+  .section-head { text-align: center; margin-bottom: 44px; }
+  .section-head .kicker {
+    font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--accent); margin-bottom: 10px;
+  }
+  .section-head h2 { font-size: clamp(30px, 4vw, 40px); font-weight: 700; letter-spacing: -0.01em; margin: 0 0 10px; }
+  .section-head p { color: var(--text-secondary); font-size: 18px; max-width: 620px; margin: 0 auto; }
+
+  /* Feature grid */
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+  .card {
+    background: var(--bg-subtle); border-radius: 18px; padding: 28px;
+    border: 1px solid var(--border);
+  }
+  .card .icon { width: 30px; height: 30px; margin-bottom: 14px; color: var(--accent); display: block; }
+  .card .icon svg { display: block; width: 100%; height: 100%; }
+  .card h3 { font-size: 19px; font-weight: 600; margin: 0 0 8px; }
+  .card p { font-size: 14px; color: var(--text-secondary); margin: 0; line-height: 1.5; }
+
+  /* Code blocks */
+  pre {
+    background: var(--code-bg); color: var(--code-text);
+    border-radius: 14px; padding: 20px 22px; overflow-x: auto;
+    font-size: 13.5px; line-height: 1.6; border: 1px solid var(--border);
+    margin: 0;
+  }
+  code { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace; }
+  .hljs-comment, .hljs-quote { color: var(--syn-comment); font-style: italic; }
+  .hljs-keyword, .hljs-selector-tag, .hljs-literal, .hljs-meta .hljs-keyword { color: var(--syn-keyword); }
+  .hljs-string, .hljs-doctag, .hljs-regexp { color: var(--syn-string); }
+  .hljs-number { color: var(--syn-number); }
+  .hljs-title, .hljs-title.function_, .hljs-title.class_ { color: var(--syn-function); }
+  .hljs-built_in, .hljs-type, .hljs-class { color: var(--syn-type); }
+  .hljs-variable, .hljs-attr, .hljs-params, .hljs-property { color: var(--code-text); }
+  .hljs-meta { color: var(--syn-comment); }
+  .code-label {
+    font-size: 12px; font-weight: 600; color: var(--text-secondary);
+    text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;
+  }
+  .code-block { margin-bottom: 22px; }
+  .tag-pill {
+    display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 10px;
+    border-radius: 980px; background: var(--pill-bg); color: var(--text-secondary);
+    margin-left: 8px; vertical-align: 2px;
+  }
+  .tag-pill.live { background: #d1f7dd; color: #0a6b2c; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* Use cases */
+  .usecase-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
+  .usecase {
+    display: flex; gap: 16px; padding: 22px;
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px;
+  }
+  .usecase .icon { width: 26px; height: 26px; flex: none; color: var(--accent); }
+  .usecase .icon svg { display: block; width: 100%; height: 100%; }
+  .usecase h4 { margin: 0 0 6px; font-size: 16px; font-weight: 600; }
+  .usecase p { margin: 0; font-size: 13.5px; color: var(--text-secondary); line-height: 1.5; }
+
+  /* API table */
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--border); }
+  th { color: var(--text-secondary); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+  td code { background: var(--code-bg); padding: 2px 6px; border-radius: 5px; font-size: 12.5px; }
+
+  /* Stat cards */
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; }
+  .stat-card {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px;
+    padding: 24px 20px; text-align: center;
+  }
+  .stat-card .stat-value { font-size: clamp(28px, 4vw, 36px); font-weight: 700; letter-spacing: -0.01em; color: var(--accent); }
+  .stat-card .stat-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text); margin-top: 6px; }
+  .stat-card .stat-note { font-size: 12.5px; color: var(--text-secondary); margin-top: 6px; }
+
+  /* Use-case example line */
+  .usecase .example {
+    display: block; margin-top: 10px; font-size: 13px;
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    color: var(--text-secondary); background: var(--code-bg); border-radius: 8px;
+    padding: 7px 10px;
+  }
+
+  /* Copy button on code blocks */
+  .code-block { position: relative; }
+  .copy-btn {
+    position: absolute; top: 10px; right: 10px;
+    background: var(--bg-subtle); border: 1px solid var(--border); border-radius: 6px;
+    color: var(--text-secondary); font-size: 11px; font-weight: 600;
+    padding: 5px 9px; cursor: pointer; font-family: inherit;
+  }
+  .copy-btn:hover { color: var(--text); border-color: var(--text-secondary); }
+  .copy-btn.copied { color: var(--accent); border-color: var(--accent); }
+
+  /* Prompt block for AI coding agents */
+  .prompt-block {
+    background: var(--bg-subtle); border: 1px solid var(--border); border-radius: 14px;
+    padding: 22px; margin-top: 16px;
+  }
+  .prompt-block .code-label { margin-bottom: 10px; }
+  .prompt-block pre { background: var(--card-bg); }
+
+  /* FAQ */
+  .faq-item { border-bottom: 1px solid var(--border); padding: 20px 0; }
+  .faq-item:first-child { padding-top: 0; }
+  .faq-item:last-child { border-bottom: none; }
+  .faq-item h4 { font-size: 16px; font-weight: 600; margin: 0 0 8px; }
+  .faq-item p { font-size: 14.5px; color: var(--text-secondary); margin: 0; line-height: 1.6; }
+
+  /* Footer */
+  footer {
+    max-width: 980px; margin: 0 auto; padding: 50px 22px 80px;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+  }
+  footer .foot-links { display: flex; gap: 22px; flex-wrap: wrap; }
+  footer .foot-links a { font-size: 13px; color: var(--text-secondary); }
+  footer .copyright { font-size: 12px; color: var(--text-secondary); }
+
+  .bubble { display:inline-block; background: var(--card-bg); border:1px solid var(--border); border-radius:18px 18px 18px 6px;
+    padding:10px 16px; font-size:16px; margin-bottom:16px; }
+  .chip-row { display:flex; gap:10px; flex-wrap:wrap; }
+  .chip-row span { border:1px solid var(--accent); color: var(--accent); border-radius:980px; padding:7px 16px; font-size:14.5px; background: var(--card-bg); }
+
+  .shot { padding:0; overflow:hidden; }
+  .shot img { width:100%; display:block; border-bottom:1px solid var(--border); }
+  .shot-caption { padding:20px; }
+  .table-note { font-size:14px; color:var(--text-secondary); margin-top:18px; line-height:1.6; }
+  .table-wrap { overflow-x:auto; }
+  @media (max-width: 720px) { .nav-links { display:none; } .hero { padding-top:60px; } }
+  .verdict { border-radius:980px; padding:7px 16px; font-size:14.5px; font-weight:500; border:1px solid var(--border); background: var(--card-bg); }
+  .verdict.ok { color:#1b873f; border-color:#1b873f; }
+  .verdict.bad { color:#d1242f; border-color:#d1242f; }
+  .verdict.score { color: var(--text-secondary); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="1" y="1" width="22" height="22" rx="7" fill="var(--accent)"/><path d="M12 5.5 7 7.5v3.8c0 3 2.1 5.4 5 6.4 2.9-1 5-3.4 5-6.4V7.5Z" fill="#fff"/><path d="m9.8 11.8 1.6 1.6 2.9-3" stroke="var(--accent)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Gatekeeper
+    </div>
+    <div class="nav-links">
+      <a href="#screenshots">Screenshots</a>
+      <a href="#install">Install</a>
+      <a href="#usage">Usage</a>
+      <a href="#quality">Quality</a>
+      <a href="#api">API</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <a class="nav-cta" href="https://github.com/rajumark/gatekeeper">GitHub ↗</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="eyebrow">Gatekeeper · by Hoverfly</div>
+  <h1>Catch toxic messages<br>before anyone reads them.</h1>
+  <p class="tagline">Check a chat message, comment or review for abuse, hate, threats and sexual harassment on the phone itself, in about a millisecond. English, Hindi, Tamil, Telugu, Malayalam, Kannada, Hinglish and more, in a 4 MB AAR.</p>
+  <div class="hero-actions">
+    <a class="btn btn-primary" href="#install">Get started</a>
+    <a class="btn btn-secondary" href="https://github.com/rajumark/gatekeeper">View source</a>
+  </div>
+  <p class="hero-trust">Free &amp; open source · Apache-2.0 · Live on JitPack</p>
+  <div class="hero-demo" id="heroDemo">
+    <div class="prompt" id="demoPrompt">gatekeeper.check("you are a stupid idiot")</div>
+    <div class="bubble" id="demoInput">you are a stupid idiot</div>
+    <div class="chip-row" id="demoChips"></div>
+  </div>
+</header>
+
+<section id="features">
+  <div class="section-head">
+    <div class="kicker">Why Gatekeeper</div>
+    <h2>Moderation that fits in your app</h2>
+    <p>No server, no API key, no per-message bill. A small Kotlin library that you can read, test and ship.</p>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16M4 12h10M4 19h7"/><path d="M17 15.5 21 19.5M21 15.5l-4 4"/></svg></span>
+      <h3>Made for Indian chat</h3>
+      <p>Understands native Hindi, Tamil, Telugu, Malayalam and Kannada, romanised Hinglish and Tanglish, and English, plus about 15 other languages. Catches misspellings like <em>f*ck</em> and <em>chutiyaaa</em>.</p>
+    </div>
+    <div class="card">
+      <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4.5 6v5.5c0 4.5 3.2 8 7.5 9.5 4.3-1.5 7.5-5 7.5-9.5V6Z"/><path d="m9 12 2 2 4-4"/></svg></span>
+      <h3>Few false alarms</h3>
+      <p>Normal chat passes: 98.8% of everyday messages are not flagged. Slang like <em>"this movie killed me"</em> or <em>"bhai tu toh kamaal hai"</em> stays clean.</p>
+    </div>
+    <div class="card">
+      <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8.5 12 3 3 8.5v7L12 21l9-5.5v-7Z"/><path d="M3 8.5 12 14l9-5.5"/><path d="M12 14v7"/></svg></span>
+      <h3>No dependencies</h3>
+      <p>Pure Kotlin inference. There is no ONNX Runtime, TFLite, ML Kit or native code, and it works from minSdk 21 in Kotlin or Java.</p>
+    </div>
+    <div class="card">
+      <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
+      <h3>Private &amp; offline</h3>
+      <p>The model ships inside the AAR. It makes no network calls, needs no permissions and sends no telemetry, so messages never leave the phone.</p>
+    </div>
+  </div>
+  <div class="stat-grid" style="margin-top: 40px;">
+    <div class="stat-card"><div class="stat-value">~1ms</div><div class="stat-label">Per message</div><div class="stat-note">Android emulator, once warm</div></div>
+    <div class="stat-card"><div class="stat-value">~4MB</div><div class="stat-label">On-device</div><div class="stat-note">model + tokenizer</div></div>
+    <div class="stat-card"><div class="stat-value">20+</div><div class="stat-label">Languages</div><div class="stat-note">native and romanised Indic</div></div>
+    <div class="stat-card"><div class="stat-value">0</div><div class="stat-label">Dependencies</div><div class="stat-note">no native code</div></div>
+  </div>
+</section>
+
+<section id="screenshots">
+  <div class="section-head">
+    <div class="kicker">On device</div>
+    <h2>Type a message, see the verdict</h2>
+    <p>Real output from the sample app on an Android emulator. These are not mockups.</p>
+  </div>
+  <div class="grid">
+    <div class="card shot">
+      <img src="screenshots/gatekeeper-clean.png" alt="Gatekeeper says a friendly Hinglish message looks fine" loading="lazy">
+      <div class="shot-caption"><h3>Slang passes</h3><p>"bhai tu toh kamaal hai 🔥" → Looks fine</p></div>
+    </div>
+    <div class="card shot">
+      <img src="screenshots/gatekeeper-threat.png" alt="Gatekeeper flags a Hinglish threat" loading="lazy">
+      <div class="shot-caption"><h3>Threat caught</h3><p>"tujhe jaan se maar dunga" → Flagged · Threat</p></div>
+    </div>
+    <div class="card shot">
+      <img src="screenshots/gatekeeper-insult.png" alt="Gatekeeper flags an English insult" loading="lazy">
+      <div class="shot-caption"><h3>Insult caught</h3><p>"you are a stupid idiot" → Flagged · Insult</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="install">
+  <div class="section-head">
+    <div class="kicker">Install</div>
+    <h2>Add it to your build</h2>
+    <p>One line in your Gradle file, available now via JitPack. No API key, no account.</p>
+  </div>
+  <div class="code-block">
+    <div class="code-label">JitPack <span class="tag-pill live">live</span></div>
+    <button class="copy-btn" type="button">Copy</button>
+    <pre><code class="language-kotlin">// settings.gradle.kts
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+        maven { url = uri("https://jitpack.io") }
+    }
+}
+
+// build.gradle.kts
+dependencies {
+    implementation("com.github.rajumark:gatekeeper:v1.0.0")
+}</code></pre>
+  </div>
+  <div class="prompt-block">
+    <div class="code-label">Build with a prompt</div>
+    <div class="code-block">
+      <button class="copy-btn" type="button">Copy</button>
+      <pre><code>Add Gatekeeper from rajumark to this Android project (Kotlin).
+
+What it does: on-device toxic message detection. Given a chat message, comment or review, it says whether it is toxic (abuse, hate, threats, sexual harassment), with category hints. English, Hindi, Tamil, Telugu, Malayalam, Kannada, Hinglish and more. ~4 MB, no dependencies, no network.
+
+Install (JitPack):
+  settings.gradle.kts: add maven { url = uri("https://jitpack.io") } to repositories
+  build.gradle.kts: implementation("com.github.rajumark:gatekeeper:v1.0.0")
+
+Usage:
+  val gatekeeper = Gatekeeper(context)      // off the main thread, keep one instance
+  if (gatekeeper.isToxic(message)) { /* hide it, ask to rephrase, or send to review */ }
+
+Repo: https://github.com/rajumark/gatekeeper#readme
+Add the dependency, then follow the README for the exact API and current version.</code></pre>
+    </div>
+  </div>
+</section>
+
+<section id="usage">
+  <div class="section-head">
+    <div class="kicker">Usage</div>
+    <h2>One call per message</h2>
+    <p>Load once and reuse the instance. <code>check()</code> is thread-safe.</p>
+  </div>
+  <div class="two-col">
+    <div class="code-block">
+      <div class="code-label">Kotlin</div>
+      <button class="copy-btn" type="button">Copy</button>
+      <pre><code class="language-kotlin">val gatekeeper = Gatekeeper(context)
+
+val v = gatekeeper.check("tujhe jaan se maar dunga")
+v.isToxic       // true
+v.score         // 0.98
+v.topCategory   // THREAT
+
+gatekeeper.isToxic("bhai tu toh kamaal hai")  // false
+gatekeeper.check(text, Sensitivity.STRICT)     // catch more
+
+gatekeeper.close()</code></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-label">Java</div>
+      <button class="copy-btn" type="button">Copy</button>
+      <pre><code class="language-java">try (Gatekeeper gk = new Gatekeeper(context)) {
+    Verdict v = gk.check("you are a stupid idiot");
+    if (v.isToxic()) {
+        // hide, blur, or ask to rephrase
+    }
+}</code></pre>
+    </div>
+  </div>
+</section>
+
+<section id="use-cases">
+  <div class="section-head">
+    <div class="kicker">Use cases</div>
+    <h2>Where Gatekeeper fits</h2>
+    <p>Anywhere people write to each other, and before anything goes to a server.</p>
+  </div>
+  <div class="usecase-list">
+    <div class="usecase">
+      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.5 7.2L4 20l1.2-4.3A8 8 0 1 1 21 12Z"/></svg></div>
+      <div><h4>Chat &amp; community apps</h4><p>Blur abusive incoming messages behind a "tap to show", or nudge the sender before they hit send.</p><code class="example">"chup kar bsdk" → hidden</code></div>
+    </div>
+    <div class="usecase">
+      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H8l-4 4Z"/><path d="M8 9h8M8 12h5"/></svg></div>
+      <div><h4>Comments &amp; reviews</h4><p>Hold toxic comments for review instead of publishing them, with no moderation API bill.</p><code class="example">"what a piece of shit app" → review queue</code></div>
+    </div>
+    <div class="usecase">
+      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-3.5 3.8-5.5 7-5.5s6 2 7 5.5"/></svg></div>
+      <div><h4>Dating &amp; social apps</h4><p>Catch sexual harassment and threats in DMs before they reach the other person.</p><code class="example">"send nudes" → Flagged · Sexual</code></div>
+    </div>
+    <div class="usecase">
+      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V9l8-5 8 5v10Z"/><path d="M9 19v-5h6v5"/></svg></div>
+      <div><h4>Kids &amp; education apps</h4><p>Use <code>Sensitivity.STRICT</code> in class chats and student forums.</p><code class="example">"tu pagal hai kya be" → Flagged</code></div>
+    </div>
+    <div class="usecase">
+      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 14h8"/></svg></div>
+      <div><h4>Games &amp; live chat</h4><p>Fast enough to check every message in a busy lobby on the player's own phone.</p><code class="example">"gg noob uninstall" → fine</code></div>
+    </div>
+    <div class="usecase">
+      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="5"/></svg></div>
+      <div><h4>A first filter before the server</h4><p>Cut what reaches your cloud moderation, and keep working offline.</p><code class="example">98.8% of normal chat passes locally</code></div>
+    </div>
+  </div>
+</section>
+
+<section id="quality">
+  <div class="section-head">
+    <div class="kicker">Quality</div>
+    <h2>Honest numbers</h2>
+    <p>Measured on held-out test sets that were never used for training, and on hand-written chat messages. Every model gets its own tuned threshold.</p>
+  </div>
+  <table>
+    <thead><tr><th></th><th>Gatekeeper</th><th>Multilingual BERT toxicity classifier</th></tr></thead>
+    <tbody>
+      <tr><td>Indian-language comments (hi, ta, te, ml, kn), F1</td><td><b>0.84</b></td><td>0.63</td></tr>
+      <tr><td>Same comments typed in Latin letters, F1</td><td><b>0.83</b></td><td>0.65</td></tr>
+      <tr><td>English comments, F1</td><td><b>0.63</b></td><td>0.50</td></tr>
+      <tr><td>15 world languages, F1</td><td>0.77</td><td><b>0.91</b></td></tr>
+      <tr><td>Hand-written chat messages, accuracy</td><td><b>88%</b></td><td>80%</td></tr>
+      <tr><td>Everyday chat not flagged</td><td><b>98.8%</b></td><td>85.1%</td></tr>
+      <tr><td>Hate-speech stress test (no slurs), accuracy</td><td>45%</td><td><b>61%</b></td></tr>
+      <tr><td>Size</td><td><b>3.8 MB</b></td><td>711 MB</td></tr>
+      <tr><td>Latency, one message, 1 CPU thread (laptop)</td><td><b>~0.1–0.4 ms</b></td><td>~16 ms</td></tr>
+    </tbody>
+  </table>
+  <p class="table-note">Gatekeeper wins on Indian languages, English, everyday chat and size/speed by a wide margin. The multilingual BERT is better on its own 15-language benchmark and on subtle group hate without slurs ("X are vermin"), which is Gatekeeper's weakest area; pair it with a server check if that matters for your app. Category scores (insult, profanity, threat, hate, sexual) are most reliable for English; decide on <code>isToxic</code> / <code>score</code>.</p>
+</section>
+
+<section id="api">
+  <div class="section-head">
+    <div class="kicker">Reference</div>
+    <h2>API at a glance</h2>
+  </div>
+  <table>
+    <thead><tr><th>Member</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>Gatekeeper(context)</code></td><td>Loads the bundled model. Implements <code>Closeable</code>.</td></tr>
+      <tr><td><code>check(text, sensitivity = BALANCED)</code></td><td>Returns a <code>Verdict</code>. A blank message is never toxic.</td></tr>
+      <tr><td><code>check(text, threshold)</code></td><td>Same, with your own threshold (0..1).</td></tr>
+      <tr><td><code>isToxic(text, sensitivity)</code> · <code>score(text)</code></td><td>Shortcuts for the verdict and the raw score.</td></tr>
+      <tr><td><code>Verdict(isToxic, score, categories)</code></td><td>Plus <code>topCategory</code>: the strongest category when toxic.</td></tr>
+      <tr><td><code>Category</code></td><td><code>INSULT</code>, <code>PROFANITY</code>, <code>THREAT</code>, <code>HATE</code>, <code>SEXUAL</code></td></tr>
+      <tr><td><code>Sensitivity</code></td><td><code>STRICT</code> (0.25) catches about 85% · <code>BALANCED</code> (0.42) · <code>RELAXED</code> (0.70) flags about 0.6% of normal chat</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="faq">
+  <div class="section-head">
+    <div class="kicker">FAQ</div>
+    <h2>Questions</h2>
+  </div>
+  <div class="faq-item"><h4>What is Gatekeeper?</h4><p>An Android library that reads a message and tells you whether it is toxic: abusive, offensive, hateful, threatening or sexual harassment.</p></div>
+  <div class="faq-item"><h4>Which languages does it support?</h4><p>Best on English, Hindi, Tamil, Telugu, Malayalam and Kannada, in native script or typed in Latin letters (Hinglish, Tanglish). It also works in about 15 other languages including Spanish, French, German, Russian, Arabic, Japanese and Chinese, less reliably. To detect the language first, use <a href="https://rajumark.github.io/beacon/">Beacon</a>.</p></div>
+  <div class="faq-item"><h4>Which sensitivity should I use?</h4><p><code>BALANCED</code> for most apps. <code>STRICT</code> for kids' apps or when a person reviews what gets flagged. <code>RELAXED</code> when you hide messages automatically and want the fewest false alarms.</p></div>
+  <div class="faq-item"><h4>Does it run on device?</h4><p>Yes. Inference runs entirely on the device in plain Kotlin. It makes no server calls, needs no network permission and sends no telemetry.</p></div>
+  <div class="faq-item"><h4>Where does it fall short?</h4><p>Subtle hate against a group without slurs, sarcasm, and some English idioms (<em>"I hate mondays"</em>). Treat it as a strong first filter, not a final judge.</p></div>
+  <div class="faq-item"><h4>Is the Kotlin port exact?</h4><p>Features and scores match the reference implementation on all 140 test vectors (max difference 5e-7), both on the JVM and on an Android device.</p></div>
+</section>
+
+<footer>
+  <div class="foot-links">
+    <a href="https://github.com/rajumark/gatekeeper">GitHub</a>
+    <a href="https://github.com/rajumark/gatekeeper/blob/main/LICENSE">Apache-2.0 License</a>
+    <a href="https://rajumark.github.io/moji/">Moji</a>
+    <a href="https://rajumark.github.io/beacon/">Beacon</a>
+    <a href="https://rajumark.github.io/comeback/">Comeback</a>
+  </div>
+  <div class="copyright">© 2026 Hoverfly · Gatekeeper</div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/kotlin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+<script>
+  if (window.hljs) { document.querySelectorAll('pre code[class*="language-"]').forEach(function (b) { hljs.highlightElement(b); }); }
+</script>
+
+<script>
+  document.querySelectorAll(".copy-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var code = btn.closest(".code-block").querySelector("pre code");
+      if (!code) return;
+      navigator.clipboard.writeText(code.textContent).then(function () {
+        var original = btn.textContent;
+        btn.textContent = "Copied";
+        btn.classList.add("copied");
+        window.setTimeout(function () {
+          btn.textContent = original;
+          btn.classList.remove("copied");
+        }, 1500);
+      });
+    });
+  });
+</script>
+
+<script>
+  // Real output from the model, rotating every 5 s: [message, toxic, score, top category].
+  var DEMO = [["you are a stupid idiot", true, 0.99, "Insult"], ["this movie killed me 😂", false, 0.03, null],
+              ["tujhe jaan se maar dunga", true, 0.98, "Threat"], ["bhai tu toh kamaal hai 🔥", false, 0.01, null],
+              ["naaye unna kolluven", true, 0.99, "Threat"], ["the delivery was late, very bad service", false, 0.00, null],
+              ["shut up you moron", true, 1.00, "Insult"], ["कल सुबह मिलते हैं", false, 0.18, null]];
+  (function () {
+    var demo = document.getElementById("heroDemo");
+    var i = 0;
+    function render(ex) {
+      document.getElementById("demoPrompt").textContent = 'gatekeeper.check("' + ex[0] + '")';
+      document.getElementById("demoInput").textContent = ex[0];
+      var chips = document.getElementById("demoChips");
+      chips.innerHTML = "";
+      var a = document.createElement("span");
+      a.className = ex[1] ? "verdict bad" : "verdict ok";
+      a.textContent = ex[1] ? "Flagged · " + ex[3] : "Looks fine";
+      var b = document.createElement("span");
+      b.className = "verdict score";
+      b.textContent = "score " + ex[2].toFixed(2);
+      chips.appendChild(a); chips.appendChild(b);
+    }
+    render(DEMO[0]);
+    window.setInterval(function () {
+      demo.classList.add("is-fading");
+      window.setTimeout(function () { i = (i + 1) % DEMO.length; render(DEMO[i]); demo.classList.remove("is-fading"); }, 350);
+    }, 5000);
+  })();
+</script>
+</body>
+</html>
