@@ -1,202 +1,157 @@
+HOVERFLY COMMUNITY LICENSE
+Version 1.0, 24 September 2026
 
-                                 Apache License
-                           Version 2.0, January 2004
-                        http://www.apache.org/licenses/
+Copyright (c) 2026 Hoverfly. All rights reserved.
 
-   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+This license applies to Gatekeeper version 1.1.0 and later. Versions 1.0.0 and earlier
+were released under the Apache License, Version 2.0, and remain under that license.
 
-   1. Definitions.
+Commercial licenses and custom models:
+  Email:     raju348636@gmail.com
+  Phone:     +91 63533 21951 (call or WhatsApp)
 
-      "License" shall mean the terms and conditions for use, reproduction,
-      and distribution as defined by Sections 1 through 9 of this document.
 
-      "Licensor" shall mean the copyright owner or entity authorized by
-      the copyright owner that is granting the License.
+In short (this summary is not part of the license):
 
-      "Legal Entity" shall mean the union of the acting entity and all
-      other entities that control, are controlled by, or are under common
-      control with that entity. For the purposes of this definition,
-      "control" means (i) the power, direct or indirect, to cause the
-      direction or management of such entity, whether by contract or
-      otherwise, or (ii) ownership of fifty percent (50%) or more of the
-      outstanding shares, or (iii) beneficial ownership of such entity.
+  - Free, including commercial use, for any product with up to 10,000 monthly active
+    devices per platform. No API key, no sign-up and no license file are needed.
+  - Above 10,000 monthly active devices, the product needs a commercial license from Hoverfly.
+  - You may not resell the library or the model, extract, modify or fine-tune the model
+    weights, or use the model or its outputs to train or distill another model.
 
-      "You" (or "Your") shall mean an individual or Legal Entity
-      exercising permissions granted by this License.
 
-      "Source" form shall mean the preferred form for making modifications,
-      including but not limited to software source code, documentation
-      source, and configuration files.
+1. DEFINITIONS
 
-      "Object" form shall mean any form resulting from mechanical
-      transformation or translation of a Source form, including but
-      not limited to compiled object code, generated documentation,
-      and conversions to other media types.
+"Software" means Gatekeeper: its source code, compiled libraries (AAR, JAR), documentation,
+and the bundled model, which includes the model weights, tokenizer, vocabularies, label and
+text lists, and the file formats that store them (together, the "Model").
 
-      "Work" shall mean the work of authorship, whether in Source or
-      Object form, made available under the License, as indicated by a
-      copyright notice that is included in or attached to the work
-      (an example is provided in the Appendix below).
+"Licensor" or "Hoverfly" means the copyright holder of the Software.
 
-      "Derivative Works" shall mean any work, whether in Source or Object
-      form, that is based on (or derived from) the Work and for which the
-      editorial revisions, annotations, elaborations, or other modifications
-      represent, as a whole, an original work of authorship. For the purposes
-      of this License, Derivative Works shall not include works that remain
-      separable from, or merely link (or bind by name) to the interfaces of,
-      the Work and Derivative Works thereof.
+"You" means the person or legal entity that uses the Software.
 
-      "Contribution" shall mean any work of authorship, including
-      the original version of the Work and any modifications or additions
-      to that Work or Derivative Works thereof, that is intentionally
-      submitted to Licensor for inclusion in the Work by the copyright owner
-      or by an individual or Legal Entity authorized to submit on behalf of
-      the copyright owner. For the purposes of this definition, "submitted"
-      means any form of electronic, verbal, or written communication sent
-      to the Licensor or its representatives, including but not limited to
-      communication on electronic mailing lists, source code control systems,
-      and issue tracking systems that are managed by, or on behalf of, the
-      Licensor for the purpose of discussing and improving the Work, but
-      excluding communication that is conspicuously marked or otherwise
-      designated in writing by the copyright owner as "Not a Contribution."
+"Product" means an application, website, service or device that You build, publish or
+operate and that includes or uses the Software. Versions and editions of the same
+application offered under the same name count as one Product.
 
-      "Contributor" shall mean Licensor and any individual or Legal Entity
-      on behalf of whom a Contribution has been received by Licensor and
-      subsequently incorporated within the Work.
+"Platform" means an operating environment on which a Product runs, such as Android, iOS,
+the web, desktop or an embedded device.
 
-   2. Grant of Copyright License. Subject to the terms and conditions of
-      this License, each Contributor hereby grants to You a perpetual,
-      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
-      copyright license to reproduce, prepare Derivative Works of,
-      publicly display, publicly perform, sublicense, and distribute the
-      Work and such Derivative Works in Source or Object form.
+"Monthly Active Devices" means the number of distinct devices on which a Product runs the
+Software at least once during a calendar month, counted separately for each Product and
+each Platform. How often the Software runs on a device does not matter.
 
-   3. Grant of Patent License. Subject to the terms and conditions of
-      this License, each Contributor hereby grants to You a perpetual,
-      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
-      (except as stated in this section) patent license to make, have made,
-      use, offer to sell, sell, import, and otherwise transfer the Work,
-      where such license applies only to those patent claims licensable
-      by such Contributor that are necessarily infringed by their
-      Contribution(s) alone or by combination of their Contribution(s)
-      with the Work to which such Contribution(s) was submitted. If You
-      institute patent litigation against any entity (including a
-      cross-claim or counterclaim in a lawsuit) alleging that the Work
-      or a Contribution incorporated within the Work constitutes direct
-      or contributory patent infringement, then any patent licenses
-      granted to You under this License for that Work shall terminate
-      as of the date such litigation is filed.
 
-   4. Redistribution. You may reproduce and distribute copies of the
-      Work or Derivative Works thereof in any medium, with or without
-      modifications, and in Source or Object form, provided that You
-      meet the following conditions:
+2. FREE COMMUNITY LICENSE
 
-      (a) You must give any other recipients of the Work or
-          Derivative Works a copy of this License; and
+Subject to the terms of this license, Hoverfly grants You a worldwide, non-exclusive,
+non-transferable, non-sublicensable, royalty-free license to:
 
-      (b) You must cause any modified files to carry prominent notices
-          stating that You changed the files; and
+  (a) use, copy and run the Software; and
+  (b) distribute the Software in compiled form as part of Your Product, including in a
+      commercial Product,
 
-      (c) You must retain, in the Source form of any Derivative Works
-          that You distribute, all copyright, patent, trademark, and
-          attribution notices from the Source form of the Work,
-          excluding those notices that do not pertain to any part of
-          the Derivative Works; and
+provided that no Product of Yours exceeds 10,000 Monthly Active Devices on any Platform.
 
-      (d) If the Work includes a "NOTICE" text file as part of its
-          distribution, then any Derivative Works that You distribute must
-          include a readable copy of the attribution notices contained
-          within such NOTICE file, excluding those notices that do not
-          pertain to any part of the Derivative Works, in at least one
-          of the following places: within a NOTICE text file distributed
-          as part of the Derivative Works; within the Source form or
-          documentation, if provided along with the Derivative Works; or,
-          within a display generated by the Derivative Works, if and
-          wherever such third-party notices normally appear. The contents
-          of the NOTICE file are for informational purposes only and
-          do not modify the License. You may add Your own attribution
-          notices within Derivative Works that You distribute, alongside
-          or as an addendum to the NOTICE text from the Work, provided
-          that such additional attribution notices cannot be construed
-          as modifying the License.
+No API key, registration, license file or payment is required for this free license.
 
-      You may add Your own copyright statement to Your modifications and
-      may provide additional or different license terms and conditions
-      for use, reproduction, or distribution of Your modifications, or
-      for any such Derivative Works as a whole, provided Your use,
-      reproduction, and distribution of the Work otherwise complies with
-      the conditions stated in this License.
+You may change the Software's source code (but not the Model) to integrate it into, or fix
+problems in, Your own Product. You may not distribute modified source code on its own.
 
-   5. Submission of Contributions. Unless You explicitly state otherwise,
-      any Contribution intentionally submitted for inclusion in the Work
-      by You to the Licensor shall be under the terms and conditions of
-      this License, without any additional terms or conditions.
-      Notwithstanding the above, nothing herein shall supersede or modify
-      the terms of any separate license agreement you may have executed
-      with Licensor regarding such Contributions.
 
-   6. Trademarks. This License does not grant permission to use the trade
-      names, trademarks, service marks, or product names of the Licensor,
-      except as required for reasonable and customary use in describing the
-      origin of the Work and reproducing the content of the NOTICE file.
+3. COMMERCIAL LICENSE
 
-   7. Disclaimer of Warranty. Unless required by applicable law or
-      agreed to in writing, Licensor provides the Work (and each
-      Contributor provides its Contributions) on an "AS IS" BASIS,
-      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
-      implied, including, without limitation, any warranties or conditions
-      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
-      PARTICULAR PURPOSE. You are solely responsible for determining the
-      appropriateness of using or redistributing the Work and assume any
-      risks associated with Your exercise of permissions under this License.
+If a Product exceeds 10,000 Monthly Active Devices on any Platform, You must obtain a
+separate written commercial license from Hoverfly for that Product before continuing to
+use or distribute the Software in it. You have 30 days from the end of the first month in
+which the limit was exceeded to obtain it.
 
-   8. Limitation of Liability. In no event and under no legal theory,
-      whether in tort (including negligence), contract, or otherwise,
-      unless required by applicable law (such as deliberate and grossly
-      negligent acts) or agreed to in writing, shall any Contributor be
-      liable to You for damages, including any direct, indirect, special,
-      incidental, or consequential damages of any character arising as a
-      result of this License or out of the use or inability to use the
-      Work (including but not limited to damages for loss of goodwill,
-      work stoppage, computer failure or malfunction, or any and all
-      other commercial damages or losses), even if such Contributor
-      has been advised of the possibility of such damages.
+A commercial license covers one Product and one Hoverfly library, unless the written
+agreement says otherwise. Contact Hoverfly at the address at the top of this license.
 
-   9. Accepting Warranty or Additional Liability. While redistributing
-      the Work or Derivative Works thereof, You may choose to offer,
-      and charge a fee for, acceptance of support, warranty, indemnity,
-      or other liability obligations and/or rights consistent with this
-      License. However, in accepting such obligations, You may act only
-      on Your own behalf and on Your sole responsibility, not on behalf
-      of any other Contributor, and only if You agree to indemnify,
-      defend, and hold each Contributor harmless for any liability
-      incurred by, or claims asserted against, such Contributor by reason
-      of your accepting any such warranty or additional liability.
 
-   END OF TERMS AND CONDITIONS
+4. RESTRICTIONS
 
-   APPENDIX: How to apply the Apache License to your work.
+Under the free license and any commercial license (unless a written agreement with
+Hoverfly expressly allows it), You may not:
 
-      To apply the Apache License to your work, attach the following
-      boilerplate notice, with the fields enclosed by brackets "[]"
-      replaced with your own identifying information. (Don't include
-      the brackets!)  The text should be enclosed in the appropriate
-      comment syntax for the file format. We also recommend that a
-      file or class name and description of purpose be included on the
-      same "printed page" as the copyright notice for easier
-      identification within third-party archives.
+  (a) Resale. Sell, rent, lease, sublicense or otherwise redistribute the Software or the
+      Model on its own, or as part of a library, SDK, framework, model collection or
+      developer tool whose purpose is to give others access to the Software's features.
 
-   Copyright [yyyy] [name of copyright owner]
+  (b) Weights. Extract, copy, export, publish or share the Model separately from Your
+      Product, or modify, fine-tune, retrain, prune, quantize, merge, convert or otherwise
+      change the Model or create a derivative of it.
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+  (c) Distillation and training. Use the Software, the Model, or any output produced by
+      them to train, fine-tune, distill, evaluate for the purpose of replicating, or
+      otherwise improve any machine learning model, other than the Model as supplied by
+      Hoverfly.
 
-       http://www.apache.org/licenses/LICENSE-2.0
+  (d) Reverse engineering. Decompile, disassemble or reverse engineer the Model, its
+      weights or its file formats, or attempt to recover how the Model was built, except
+      to the extent that applicable law expressly permits this despite this restriction.
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+  (e) Hosted access. Offer the Software or the Model as a hosted service, API or cloud
+      endpoint that lets third parties send inputs and receive its outputs.
+
+  (f) Competing products. Use the Software or the Model to build a product that competes
+      with the Software.
+
+  (g) Notices. Remove, hide or change any copyright notice, license text or attribution in
+      the Software.
+
+  (h) Workarounds. Split a Product into several Products, or use similar arrangements, to
+      stay under the Monthly Active Devices limit.
+
+  (i) Unlawful use. Use the Software in violation of any applicable law.
+
+
+5. OWNERSHIP
+
+The Software and the Model are licensed, not sold. Hoverfly keeps all rights, title and
+interest in them, including any improvements Hoverfly makes. All rights not expressly
+granted in this license are reserved. This license does not grant any right to use the
+Hoverfly name, logos or product names, except to state truthfully that Your Product uses
+the Software.
+
+
+6. REDISTRIBUTION NOTICE
+
+When You distribute the Software as part of Your Product, it must remain subject to this
+license. You do not need to show any notice inside Your Product's user interface.
+
+
+7. TERMINATION
+
+This license ends automatically if You break any of its terms. If it is Your first breach
+and You fix it within 30 days of receiving notice from Hoverfly, the license is restored.
+When the license ends, You must stop using and distributing the Software and delete all
+copies of it, including those in Your Products' future releases. Sections 4, 5, 8, 9 and 10
+continue to apply after termination.
+
+
+8. NO WARRANTY
+
+THE SOFTWARE AND THE MODEL ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, ACCURACY
+AND NON-INFRINGEMENT. Model outputs can be wrong. You are responsible for how You use them
+and for any decision made with them.
+
+
+9. LIMITATION OF LIABILITY
+
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, HOVERFLY WILL NOT BE LIABLE FOR ANY DIRECT, INDIRECT,
+INCIDENTAL, SPECIAL, CONSEQUENTIAL OR EXEMPLARY DAMAGES, OR FOR ANY LOSS OF PROFITS, DATA,
+USE OR GOODWILL, ARISING FROM OR RELATED TO THE SOFTWARE OR THIS LICENSE, EVEN IF ADVISED OF
+THE POSSIBILITY OF SUCH DAMAGES.
+
+
+10. GENERAL
+
+This license is governed by the laws of India, and the courts of India have exclusive
+jurisdiction over any dispute about it. Hoverfly may publish new versions of this license
+for future releases of the Software; each release stays under the license it shipped with.
+If any provision is found unenforceable, the rest of the license remains in effect. This
+license, together with any written commercial agreement, is the entire agreement between
+You and Hoverfly about the Software.
