@@ -329,6 +329,16 @@
   .verdict.ok { color:#1b873f; border-color:#1b873f; }
   .verdict.bad { color:#d1242f; border-color:#d1242f; }
   .verdict.score { color: var(--text-secondary); }
+
+  /* App ideas */
+  .idea-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 12px; }
+  .idea {
+    display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px;
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px;
+  }
+  .idea .emo { font-size: 22px; line-height: 1.2; flex: none; }
+  .idea p { margin: 0; font-size: 14px; line-height: 1.45; color: var(--text-secondary); }
+  .idea p b { color: var(--text); font-weight: 600; }
 </style>
 </head>
 <body>
@@ -344,6 +354,7 @@
       <a href="#install">Install</a>
       <a href="#usage">Usage</a>
       <a href="#quality">Quality</a>
+      <a href="#ideas">Ideas</a>
       <a href="#api">API</a>
       <a href="#pricing">Pricing</a>
       <a href="#faq">FAQ</a>
@@ -536,6 +547,36 @@ gatekeeper.close()</code></pre>
       <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="5"/></svg></div>
       <div><h4>A first filter before the server</h4><p>Cut what reaches your cloud moderation, and keep working offline.</p><code class="example">98.8% of normal chat passes locally</code></div>
     </div>
+  </div>
+</section>
+
+<section id="ideas">
+  <div class="section-head">
+    <div class="kicker">App ideas</div>
+    <h2>20 apps you could build with Gatekeeper</h2>
+    <p>Real problems Gatekeeper solves today. Pick one and ship it.</p>
+  </div>
+  <div class="idea-list">
+    <div class="idea"><span class="emo" aria-hidden="true">💬</span><p><b>Chat apps</b> · Blur abusive incoming messages behind "tap to show".</p></div>
+    <div class="idea"><span class="emo" aria-hidden="true">✋</span><p><b>Think-before-you-send</b> · Nudge users with "Are you sure?" when their own message is toxic.</p></div>
+    <div class="idea"><span class="emo" aria-hidden="true">🗨️</span><p><b>Comments &amp; reviews</b> · Hold toxic comments for review instead of publishing them instantly.</p></div>
+    <div class="idea"><span class="emo" aria-hidden="true">💞</span><p><b>Dating DMs</b> · Catch sexual harassment and threats before they reach the other person.</p></div>
+    <div class="idea"><span class="emo" aria-hidden="true">🧒</span><p><b>Kids &amp; edtech apps</b> · Keep class chats and doubt forums clean with strict mode.</p></div>
+    <div class="idea"><span class="emo" aria-hidden="true">🎮</span><p><b>Game lobby chat</b> · Fast enough to check every message in a busy lobby, on the player's phone.</p></div>
+    <div class="idea"><span class="emo" aria-hidden="true">📺</span><p><b>Live stream chat</b> · Hide toxic messages in fast-moving live chat without server lag.</p></div>
+    <div class="idea"><span class="emo" aria-hidden="true">☁️</span><p><b>Cheaper cloud moderation</b> · Filter on the device first and cut your moderation API bill.</p></div>
+    <div class="idea"><span class="emo" aria-hidden="true">🛒</span><p><b>Marketplace chat</b> · Flag threatening or abusive buyers and sellers early.</p></div>
+    <div class="idea"><span class="emo" aria-hidden="true">🚕</span><p><b>Rider–driver chat</b> · Spot threats and harassment between riders and drivers.</p></div>
+    <div class="idea"><span class="emo" aria-hidden="true">🏘️</span><p><b>Community &amp; society groups</b> · Keep neighbourhood and housing-society groups civil.</p></div>
+    <div class="idea"><span class="emo" aria-hidden="true">👩‍💼</span><p><b>Workplace messaging</b> · Flag abusive messages in team chat before they escalate.</p></div>
+    <div class="idea"><span class="emo" aria-hidden="true">🧑‍💻</span><p><b>Username &amp; bio checks</b> · Block abusive usernames, bios and group names at sign-up.</p></div>
+    <div class="idea"><span class="emo" aria-hidden="true">🤖</span><p><b>Chatbot input guard</b> · Detect abuse aimed at your bot and reply calmly or end the chat.</p></div>
+    <div class="idea"><span class="emo" aria-hidden="true">📰</span><p><b>News app comments</b> · Keep comment sections under news articles readable.</p></div>
+    <div class="idea"><span class="emo" aria-hidden="true">🎙️</span><p><b>Voice room transcripts</b> · Check speech-to-text transcripts of audio rooms for abuse.</p></div>
+    <div class="idea"><span class="emo" aria-hidden="true">🙋</span><p><b>Live Q&amp;A &amp; polls</b> · Keep toxic questions off the screen at events and webinars.</p></div>
+    <div class="idea"><span class="emo" aria-hidden="true">⭐</span><p><b>Review platforms</b> · Allow harsh 1-star reviews, but not slurs or threats.</p></div>
+    <div class="idea"><span class="emo" aria-hidden="true">👪</span><p><b>Parental safety</b> · Warn a child on their own phone when an incoming message is abusive.</p></div>
+    <div class="idea"><span class="emo" aria-hidden="true">📴</span><p><b>Offline moderation</b> · Keep moderating when the network drops or the server is down.</p></div>
   </div>
 </section>
 
