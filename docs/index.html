@@ -361,6 +361,30 @@
   .hero-demo .prompt { font-family: var(--mono); color: var(--accent); }
   .hero-demo .input-row { border: 0; border-radius: 16px; box-shadow: var(--shadow); padding: 14px 18px; }
   @media (max-width: 640px) { .hero-demo { padding: 24px 18px; border-radius: 24px; } }
+  /* Hero demo: type, sweep the risk meter, then hide or deliver */
+  .gk-bubble { position: relative; display: block; max-width: 100%; min-height: 1.6em; padding: 14px 20px; font-size: 18px; transition: box-shadow .3s ease; }
+  .gk-bubble .caret { display: inline-block; width: 2px; height: 1.1em; margin-left: 1px; vertical-align: -0.15em; background: var(--accent); animation: caret-blink 1s steps(1) infinite; }
+  .gk-text { transition: filter .45s ease, opacity .45s ease; }
+  .gk-shield { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 8px; border-radius: inherit;
+    font-size: 15px; font-weight: 600; color: #fff; background: rgba(209, 36, 47, .88); opacity: 0; transform: scale(.96); pointer-events: none; transition: opacity .35s ease, transform .35s ease; }
+  .gk-shield::before { content: ""; width: 16px; height: 18px; background: #fff;
+    clip-path: polygon(50% 0, 100% 18%, 100% 52%, 50% 100%, 0 52%, 0 18%); }
+  .gk-bubble.is-blocked .gk-text { filter: blur(7px); opacity: .7; }
+  .gk-bubble.is-blocked .gk-shield { opacity: 1; transform: none; }
+  .gk-bubble.is-blocked { animation: gk-shake .4s ease; }
+  .gk-bubble.is-clear { box-shadow: 0 0 0 3px var(--green), var(--shadow); }
+  .gk-meter { margin: 18px 0 14px; }
+  .gk-track { position: relative; height: 10px; border-radius: 5px; background: linear-gradient(90deg, #3ddc84 0%, #c6e04a 35%, #f9ab00 60%, #d1242f 100%); }
+  .gk-needle { position: absolute; top: 50%; left: 0; width: 18px; height: 18px; margin: -9px 0 0 -9px; border-radius: 50%; background: #fff; border: 3px solid var(--accent); box-shadow: var(--shadow); }
+  .gk-scale { display: flex; justify-content: space-between; margin-top: 6px; font: 500 11px/1 var(--mono); color: var(--text-secondary); letter-spacing: .04em; text-transform: uppercase; }
+  #demoChips { min-height: 36px; }
+  #demoChips .verdict { animation: gk-pop .35s cubic-bezier(.2,.9,.3,1.3); }
+  #demoChips .verdict.bad { background: #d1242f; color: #fff; }
+  #demoChips .verdict.ok { background: var(--green); color: var(--green-ink); }
+  #demoChips .verdict.score { background: var(--card-bg); color: var(--text-secondary); font-family: var(--mono); box-shadow: var(--shadow); }
+  @keyframes caret-blink { 50% { opacity: 0; } }
+  @keyframes gk-shake { 20% { transform: translateX(-6px); } 40% { transform: translateX(6px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(3px); } }
+  @keyframes gk-pop { from { opacity: 0; transform: scale(.7); } }
 
   /* Buttons: 48px Material pills */
   .btn { height: 48px; padding: 0 24px; border: 0; font-size: 16px; font-weight: 500; justify-content: center; transition: box-shadow .2s, background .2s; }
@@ -494,9 +518,13 @@
   </div>
   <p class="hero-trust">Free up to 10k monthly active devices · No API key · Live on JitPack</p>
   <div class="hero-demo" id="heroDemo">
-    <div class="prompt" id="demoPrompt">gatekeeper.check("you are a stupid idiot")</div>
-    <div class="bubble" id="demoInput">you are a stupid idiot</div>
-    <div class="chip-row" id="demoChips"></div>
+    <div class="prompt" id="demoPrompt">gatekeeper.check(message)</div>
+    <div class="bubble gk-bubble is-blocked" id="demoBubble"><span class="gk-text" id="demoText">you are a stupid idiot</span><span class="gk-shield" id="demoShield">Hidden · Insult</span></div>
+    <div class="gk-meter" aria-hidden="true">
+      <div class="gk-track"><i class="gk-needle" id="gkNeedle" style="left:99%"></i></div>
+      <div class="gk-scale"><span>safe</span><span>toxic</span></div>
+    </div>
+    <div class="chip-row" id="demoChips"><span class="verdict bad">Flagged · Insult</span><span class="verdict score">score 0.99</span></div>
   </div>
 </header>
 
@@ -861,32 +889,48 @@ gatekeeper.close()</code></pre>
 </script>
 
 <script>
-  // Real output from the model, rotating every 5 s: [message, toxic, score, top category].
   var DEMO = [["you are a stupid idiot", true, 0.99, "Insult"], ["this movie killed me 😂", false, 0.03, null],
               ["tujhe jaan se maar dunga", true, 0.98, "Threat"], ["bhai tu toh kamaal hai 🔥", false, 0.01, null],
               ["naaye unna kolluven", true, 0.99, "Threat"], ["the delivery was late, very bad service", false, 0.00, null],
               ["shut up you moron", true, 1.00, "Insult"], ["कल सुबह मिलते हैं", false, 0.18, null]];
+  // Real output from the model: the message is typed, the meter sweeps to its score, then it is hidden or delivered.
   (function () {
-    var demo = document.getElementById("heroDemo");
-    var i = 0;
-    function render(ex) {
-      document.getElementById("demoPrompt").textContent = 'gatekeeper.check("' + ex[0] + '")';
-      document.getElementById("demoInput").textContent = ex[0];
-      var chips = document.getElementById("demoChips");
-      chips.innerHTML = "";
-      var a = document.createElement("span");
-      a.className = ex[1] ? "verdict bad" : "verdict ok";
-      a.textContent = ex[1] ? "Flagged · " + ex[3] : "Looks fine";
-      var b = document.createElement("span");
-      b.className = "verdict score";
-      b.textContent = "score " + ex[2].toFixed(2);
-      chips.appendChild(a); chips.appendChild(b);
+    var demo = document.getElementById("heroDemo"), bubble = document.getElementById("demoBubble"), text = document.getElementById("demoText"),
+        shield = document.getElementById("demoShield"), needle = document.getElementById("gkNeedle"), chips = document.getElementById("demoChips");
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    function sleep(ms) { return new Promise(function (r) { window.setTimeout(r, ms); }); }
+    function el(tag, cls, t) { var e = document.createElement(tag); if (cls) e.className = cls; if (t != null) e.textContent = t; return e; }
+    function sweep(to, ms, score) {
+      return new Promise(function (done) {
+        var t0 = performance.now();
+        (function f(t) {
+          var k = Math.min(1, (t - t0) / ms), e = 1 - Math.pow(1 - k, 3), v = to * e;
+          needle.style.left = (v * 100) + "%"; score.textContent = "score " + v.toFixed(2);
+          if (k < 1) requestAnimationFrame(f); else done();
+        })(t0);
+      });
     }
-    render(DEMO[0]);
-    window.setInterval(function () {
-      demo.classList.add("is-fading");
-      window.setTimeout(function () { i = (i + 1) % DEMO.length; render(DEMO[i]); demo.classList.remove("is-fading"); }, 350);
-    }, 5000);
+    async function play(ex) {
+      bubble.className = "bubble gk-bubble"; text.textContent = ""; chips.innerHTML = ""; needle.style.left = "0%";
+      var typed = document.createTextNode(""), caret = el("span", "caret");
+      text.appendChild(typed); text.appendChild(caret);
+      var chars = Array.from(ex[0]);
+      for (var i = 0; i < chars.length; i++) { typed.data += chars[i]; await sleep(chars[i] === " " ? 80 : 40 + Math.random() * 45); }
+      await sleep(350); caret.remove();
+
+      var score = el("span", "verdict score", "score 0.00");
+      chips.appendChild(score);
+      await sweep(ex[2], 1100, score);
+      await sleep(200);
+      var verdict = el("span", ex[1] ? "verdict bad" : "verdict ok", ex[1] ? "Flagged · " + ex[3] : "✓ Looks fine · delivered");
+      chips.insertBefore(verdict, score);
+      if (ex[1]) { shield.textContent = "Hidden · " + ex[3]; bubble.classList.add("is-blocked"); }
+      else bubble.classList.add("is-clear");
+      await sleep(3000);
+      demo.classList.add("is-fading"); await sleep(380);
+      demo.classList.remove("is-fading");
+    }
+    (async function loop() { var i = 0; for (;;) { await play(DEMO[i]); i = (i + 1) % DEMO.length; } })();
   })();
 </script>
 </body>
