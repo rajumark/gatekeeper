@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Gatekeeper — on-device toxic message detection for Android</title>
+<title>Gatekeeper — on-device toxic message detection for Kotlin Multiplatform</title>
 <meta name="description" content="Gatekeeper detects toxic messages (abuse, hate, threats, sexual harassment) on-device in English, Hindi, Tamil, Telugu, Malayalam, Kannada and Hinglish. ~4 MB, no dependencies, no network. Free for up to 10,000 monthly active devices.">
 <meta name="theme-color" content="#ffffff">
 <meta name="color-scheme" content="light">
@@ -511,12 +511,12 @@
 <header class="hero">
   <div class="eyebrow">Gatekeeper · by Hoverfly</div>
   <h1>Catch toxic messages<br>before anyone reads them.</h1>
-  <p class="tagline">Check a chat message, comment or review for abuse, hate, threats and sexual harassment on the phone itself, in about a millisecond. English, Hindi, Tamil, Telugu, Malayalam, Kannada, Hinglish and more, in a 4 MB AAR.</p>
+  <p class="tagline">Check a chat message, comment or review for abuse, hate, threats and sexual harassment on the device itself (Android, iOS, desktop or the web), in about a millisecond. English, Hindi, Tamil, Telugu, Malayalam, Kannada, Hinglish and more, in a 4 MB library.</p>
   <div class="hero-actions">
     <a class="btn btn-primary" href="#install">Get started</a>
     <a class="btn btn-secondary" href="https://github.com/rajumark/gatekeeper">View source</a>
   </div>
-  <p class="hero-trust">Free up to 10k monthly active devices · No API key · Live on JitPack</p>
+  <p class="hero-trust">Free up to 10k monthly active devices · No API key · On Maven Central · Android, iOS, desktop, web</p>
   <div class="hero-demo" id="heroDemo">
     <div class="prompt" id="demoPrompt">gatekeeper.check(message)</div>
     <div class="bubble gk-bubble is-blocked" id="demoBubble"><span class="gk-text" id="demoText">you are a stupid idiot</span><span class="gk-shield" id="demoShield">Hidden · Insult</span></div>
@@ -548,12 +548,12 @@
     <div class="card">
       <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8.5 12 3 3 8.5v7L12 21l9-5.5v-7Z"/><path d="M3 8.5 12 14l9-5.5"/><path d="M12 14v7"/></svg></span>
       <h3>No dependencies</h3>
-      <p>Pure Kotlin inference. There is no ONNX Runtime, TFLite, ML Kit or native code, and it works from minSdk 21 in Kotlin or Java.</p>
+      <p>Pure Kotlin inference. There is no ONNX Runtime, TFLite, ML Kit or native code, and it runs on Android (minSdk 21), iOS, macOS, JVM desktop, JavaScript and WebAssembly, from Kotlin or Java.</p>
     </div>
     <div class="card">
       <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
       <h3>Private &amp; offline</h3>
-      <p>The model ships inside the AAR. It makes no network calls, needs no permissions and sends no telemetry, so messages never leave the phone.</p>
+      <p>The model ships inside the library on every platform. It makes no network calls, needs no permissions and sends no telemetry, so messages never leave the phone.</p>
     </div>
   </div>
   <div class="stat-grid" style="margin-top: 40px;">
@@ -584,44 +584,50 @@
       <div class="shot-caption"><h3>Insult caught</h3><p>"you are a stupid idiot" → Flagged · Insult</p></div>
     </div>
   </div>
+  <div class="section-head" style="margin-top: 48px;">
+    <h2>Same library on every platform</h2>
+    <p>The Kotlin Multiplatform sample app, built from the published artifacts, gives the same result on Android, iOS, desktop and the web.</p>
+  </div>
+  <div class="grid">
+    <div class="card shot"><img src="screenshots/kmp-android.png" alt="Gatekeeper sample on Android" loading="lazy"><div class="shot-caption"><h3>Android</h3><p>you are a stupid idiot → Flagged · Insult 99%</p></div></div>
+    <div class="card shot"><img src="screenshots/kmp-ios.png" alt="Gatekeeper sample on iOS" loading="lazy"><div class="shot-caption"><h3>iOS</h3><p>you are a stupid idiot → Flagged · Insult 99%</p></div></div>
+    <div class="card shot"><img src="screenshots/kmp-desktop.png" alt="Gatekeeper sample on Desktop (JVM)" loading="lazy"><div class="shot-caption"><h3>Desktop (JVM)</h3><p>you are a stupid idiot → Flagged · Insult 99%</p></div></div>
+    <div class="card shot"><img src="screenshots/kmp-web-wasm.png" alt="Gatekeeper sample on Web (Wasm)" loading="lazy"><div class="shot-caption"><h3>Web (Wasm)</h3><p>you are a stupid idiot → Flagged · Insult 99%</p></div></div>
+  </div>
 </section>
 
 <section id="install">
   <div class="section-head">
     <div class="kicker">Install</div>
     <h2>Add it to your build</h2>
-    <p>One line in your Gradle file, available now via JitPack. No API key, no account.</p>
+    <p>One line in your Gradle file, from Maven Central. Works in commonMain for Android, iOS, macOS, JVM desktop, JavaScript and WebAssembly. No API key, no account.</p>
   </div>
   <div class="code-block">
-    <div class="code-label">JitPack <span class="tag-pill live">live</span></div>
+    <div class="code-label">Maven Central <span class="tag-pill live">live</span></div>
     <button class="copy-btn" type="button">Copy</button>
-    <pre><code class="language-kotlin">// settings.gradle.kts
-dependencyResolutionManagement {
-    repositories {
-        mavenCentral()
-        maven { url = uri("https://jitpack.io") }
-    }
+    <pre><code class="language-kotlin">// build.gradle.kts: commonMain, or any platform source set
+dependencies {
+    implementation("io.github.rajumark:gatekeeper:2.0.0")
 }
 
-// build.gradle.kts
-dependencies {
-    implementation("com.github.rajumark:gatekeeper:v1.1.0")
-}</code></pre>
+// Gradle picks the right artifact per platform:
+// gatekeeper-android · gatekeeper-jvm · gatekeeper-iosarm64 · gatekeeper-iossimulatorarm64
+// gatekeeper-macosarm64 · gatekeeper-js · gatekeeper-wasm-js</code></pre>
   </div>
   <div class="prompt-block">
     <div class="code-label">Build with a prompt</div>
     <div class="code-block">
       <button class="copy-btn" type="button">Copy</button>
-      <pre><code>Add Gatekeeper from rajumark to this Android project (Kotlin).
+      <pre><code>Add Gatekeeper from rajumark to this Kotlin Multiplatform or Android project.
 
 What it does: on-device toxic message detection. Given a chat message, comment or review, it says whether it is toxic (abuse, hate, threats, sexual harassment), with category hints. English, Hindi, Tamil, Telugu, Malayalam, Kannada, Hinglish and more. ~4 MB, no dependencies, no network.
 
-Install (JitPack):
-  settings.gradle.kts: add maven { url = uri("https://jitpack.io") } to repositories
-  build.gradle.kts: implementation("com.github.rajumark:gatekeeper:v1.1.0")
+Install (Maven Central, no extra repository):
+  build.gradle.kts (commonMain or any source set): implementation("io.github.rajumark:gatekeeper:2.0.0")
+  Platforms: Android, iOS, macOS, JVM desktop, JavaScript, WebAssembly
 
 Usage:
-  val gatekeeper = Gatekeeper(context)      // off the main thread, keep one instance
+  val gatekeeper = Gatekeeper()      // off the main thread, keep one instance
   if (gatekeeper.isToxic(message)) { /* hide it, ask to rephrase, or send to review */ }
 
 Repo: https://github.com/rajumark/gatekeeper#readme
@@ -640,7 +646,7 @@ Add the dependency, then follow the README for the exact API and current version
     <div class="code-block">
       <div class="code-label">Kotlin</div>
       <button class="copy-btn" type="button">Copy</button>
-      <pre><code class="language-kotlin">val gatekeeper = Gatekeeper(context)
+      <pre><code class="language-kotlin">val gatekeeper = Gatekeeper()
 
 val v = gatekeeper.check("tujhe jaan se maar dunga")
 v.isToxic       // true
@@ -655,7 +661,7 @@ gatekeeper.close()</code></pre>
     <div class="code-block">
       <div class="code-label">Java</div>
       <button class="copy-btn" type="button">Copy</button>
-      <pre><code class="language-java">try (Gatekeeper gk = new Gatekeeper(context)) {
+      <pre><code class="language-java">try (Gatekeeper gk = new Gatekeeper()) {
     Verdict v = gk.check("you are a stupid idiot");
     if (v.isToxic()) {
         // hide, blur, or ask to rephrase
@@ -760,7 +766,7 @@ gatekeeper.close()</code></pre>
   <table>
     <thead><tr><th>Member</th><th>Description</th></tr></thead>
     <tbody>
-      <tr><td><code>Gatekeeper(context)</code></td><td>Loads the bundled model. Implements <code>Closeable</code>.</td></tr>
+      <tr><td><code>Gatekeeper()</code></td><td>Loads the bundled model. Implements <code>AutoCloseable</code>.</td></tr>
       <tr><td><code>check(text, sensitivity = BALANCED)</code></td><td>Returns a <code>Verdict</code>. A blank message is never toxic.</td></tr>
       <tr><td><code>check(text, threshold)</code></td><td>Same, with your own threshold (0..1).</td></tr>
       <tr><td><code>isToxic(text, sensitivity)</code> · <code>score(text)</code></td><td>Shortcuts for the verdict and the raw score.</td></tr>
@@ -841,7 +847,7 @@ gatekeeper.close()</code></pre>
     <div class="kicker">FAQ</div>
     <h2>Questions</h2>
   </div>
-  <div class="faq-item"><h4>What is Gatekeeper?</h4><p>An Android library that reads a message and tells you whether it is toxic: abusive, offensive, hateful, threatening or sexual harassment.</p></div>
+  <div class="faq-item"><h4>What is Gatekeeper?</h4><p>A Kotlin Multiplatform library (Android, iOS, macOS, JVM desktop, JavaScript, WebAssembly) that reads a message and tells you whether it is toxic: abusive, offensive, hateful, threatening or sexual harassment.</p></div>
   <div class="faq-item"><h4>Which languages does it support?</h4><p>Best on English, Hindi, Tamil, Telugu, Malayalam and Kannada, in native script or typed in Latin letters (Hinglish, Tanglish). It also works in about 15 other languages including Spanish, French, German, Russian, Arabic, Japanese and Chinese, less reliably. To detect the language first, use <a href="https://rajumark.github.io/beacon/">Beacon</a>.</p></div>
   <div class="faq-item"><h4>Which sensitivity should I use?</h4><p><code>BALANCED</code> for most apps. <code>STRICT</code> for kids' apps or when a person reviews what gets flagged. <code>RELAXED</code> when you hide messages automatically and want the fewest false alarms.</p></div>
   <div class="faq-item"><h4>Does it run on device?</h4><p>Yes. Inference runs entirely on the device in plain Kotlin. It makes no server calls, needs no network permission and sends no telemetry.</p></div>

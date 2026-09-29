@@ -1,0 +1,27 @@
+:root { --bg: #fbf8ff; --card: #efedf4; --text: #1b1b21; --muted: #5d5e67; --line: #c6c6d0; --accent: #6750a4; --track: #e2e0ea; --ok: #1b873f; --bad: #d1242f; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+main { max-width: 640px; margin: 0 auto; padding: 24px 16px 48px; }
+h1 { font-size: 34px; font-weight: 400; margin: 0; }
+h2 { font-size: 15px; font-weight: 500; margin: 20px 0 4px; }
+.muted { color: var(--muted); margin: 4px 0 16px; }
+.small { font-size: 13px; margin: 8px 0 0; }
+input { width: 100%; font: inherit; font-size: 18px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 6px; background: transparent; }
+input:focus { outline: 2px solid var(--accent); border-color: transparent; }
+.segs { display: flex; margin-top: 14px; }
+.seg { flex: 1; font: inherit; font-size: 14px; padding: 8px; border: 1px solid var(--line); background: transparent; cursor: pointer; }
+.seg:first-child { border-radius: 20px 0 0 20px; } .seg:last-child { border-radius: 0 20px 20px 0; } .seg + .seg { border-left: 0; }
+.seg.on { background: #e8def8; }
+.card { background: var(--card); border-radius: 20px; padding: 16px 20px; margin-top: 16px; }
+.verdict { font-size: 22px; font-weight: 600; margin-bottom: 8px; }
+.verdict.ok { color: var(--ok); } .verdict.bad { color: var(--bad); }
+.label { font-weight: 500; font-size: 14px; margin: 10px 0 4px; }
+.bar { display: flex; align-items: center; gap: 10px; padding: 3px 0; }
+.bar .lbl { width: 96px; font-size: 14px; }
+.track { flex: 1; height: 10px; background: var(--track); border-radius: 5px; position: relative; overflow: hidden; }
+.fill { height: 10px; background: var(--accent); border-radius: 5px; }
+.fill.ok { background: var(--ok); } .fill.bad { background: var(--bad); }
+.marker { position: absolute; top: 0; width: 2px; height: 10px; background: var(--text); }
+.pct { width: 40px; font-size: 13px; font-variant-numeric: tabular-nums; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; padding: 8px 0 4px; }
+.chip { font: inherit; font-size: 14px; padding: 6px 14px; border: 1px solid var(--line); border-radius: 8px; background: transparent; cursor: pointer; }
