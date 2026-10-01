@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "gatekeeper-kmp"
 include(":gatekeeper")
+include(":demo")

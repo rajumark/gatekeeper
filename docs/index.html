@@ -621,6 +621,65 @@
   .nav-switch-menu a[aria-current] { box-shadow: inset 0 0 0 2px #3ddc84; }
   .nav-switch-menu a.all { justify-content: center; margin-top: 6px; border-top: 1px solid var(--border); border-radius: 0 0 12px 12px; padding-top: 12px; font-weight: 500; color: var(--accent) !important; }
   @media (max-width: 520px) { .nav-switch-menu { position: fixed; top: 64px; left: 16px; right: 16px; width: auto; max-width: none; } }
+
+  /* Live demo: the real library (Kotlin/Wasm) in a Web Worker. A div, not a section, so the section bands below keep their colours. */
+  .live { padding: 72px 22px; background: var(--accent); box-shadow: 0 0 0 100vmax var(--accent); clip-path: inset(0 -100vmax); }
+  .live-inner { max-width: 980px; margin: 0 auto; }
+  .live .section-head { margin-bottom: 36px; }
+  .live .section-head .kicker { color: var(--green); display: inline-flex; align-items: center; gap: 8px; }
+  .live .section-head .kicker::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 4px rgba(61, 220, 132, .25); }
+  .live .section-head h2 { color: #fff; }
+  .live .section-head p { color: rgba(255, 255, 255, .78); }
+  .live-card { max-width: 760px; margin: 0 auto; background: var(--card-bg); border-radius: 28px; padding: 28px; box-shadow: 0 12px 40px rgba(0, 0, 0, .25); }
+  .live-status { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-secondary); background: var(--bg-subtle); border-radius: 980px; padding: 6px 12px 6px 10px; margin-bottom: 16px; }
+  .live-status .dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--border); border-top-color: var(--accent); animation: live-spin .8s linear infinite; flex: none; }
+  .live-status[data-state="ready"] { background: var(--green-soft); color: var(--green-ink); }
+  .live-status[data-state="ready"] .dot { border: 0; background: #1e8e3e; animation: none; width: 8px; height: 8px; margin: 0 3px; }
+  .live-status[data-state="error"] { background: #fce8e6; color: #a50e0e; }
+  .live-status[data-state="error"] .dot { border: 0; background: #d93025; animation: none; width: 8px; height: 8px; margin: 0 3px; }
+  @keyframes live-spin { to { transform: rotate(360deg); } }
+  @keyframes live-shimmer { from { background-position: 100% 0; } to { background-position: -200% 0; } }
+  .live-input { display: block; width: 100%; font: inherit; font-size: 20px; color: var(--text-strong); padding: 14px 18px; border: 2px solid var(--border); border-radius: 16px; background: var(--bg); outline: none; transition: border-color .15s; resize: vertical; }
+  .live-input:focus { border-color: var(--accent); }
+  textarea.live-input { min-height: 96px; line-height: 1.45; font-size: 18px; }
+  .live-examples { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 20px; }
+  .live-examples button, .live-seg button, .live-btn { font: inherit; font-size: 13px; color: var(--text); background: var(--bg-subtle); border: 1px solid transparent; border-radius: 980px; padding: 5px 12px; cursor: pointer; }
+  .live-examples button:hover, .live-seg button:hover, .live-btn:hover { border-color: var(--border); background: var(--tonal-hover); }
+  .live-seg { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .live-seg button[aria-pressed="true"] { border-color: var(--accent); background: var(--bg); }
+  .live-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-top: 18px; font-size: 13px; color: var(--text-secondary); }
+  .live-meta { font-variant-numeric: tabular-nums; }
+  .live-skel { border-radius: 14px; min-height: 22px; background: linear-gradient(90deg, #eef1ec 25%, #f9fbf6 50%, #eef1ec 75%); background-size: 300% 100%; animation: live-shimmer 1.1s linear infinite; }
+  .live-skel + .live-skel { margin-top: 10px; }
+  .live-label { font-size: 12px; font-weight: 500; letter-spacing: .02em; color: var(--text-secondary); margin: 0 0 8px; }
+  .live-rows { display: grid; gap: 6px; }
+  .live-row { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 2fr) 48px; align-items: center; gap: 12px; font-size: 14px; }
+  .live-row .n { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-strong); }
+  .live-row .n small { color: var(--text-secondary); margin-left: 6px; font-family: var(--mono); font-size: 11px; }
+  .live-row .bar { height: 8px; border-radius: 99px; background: var(--bg-subtle); overflow: hidden; }
+  .live-row .bar i { display: block; height: 100%; border-radius: 99px; background: var(--green); transition: width .25s; }
+  .live-row .v { text-align: right; font-variant-numeric: tabular-nums; color: var(--text-secondary); }
+  .live-row.is-top .n { font-weight: 600; }
+  .live-out { border-radius: 16px; background: var(--bg-subtle); padding: 16px 18px; font-size: 18px; line-height: 1.6; color: var(--text-strong); min-height: 60px; overflow-wrap: anywhere; white-space: pre-wrap; }
+  .live-toast { position: fixed; left: 16px; bottom: 16px; z-index: 120; display: flex; align-items: center; gap: 8px; padding: 8px 14px 8px 10px; border-radius: 980px; background: var(--accent); color: #fff !important; font-size: 13px; box-shadow: 0 0 0 1px rgba(255, 255, 255, .18), 0 4px 16px rgba(0, 0, 0, .2); transition: opacity .4s, transform .4s; }
+  .live-toast .dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid rgba(255, 255, 255, .3); border-top-color: var(--green); animation: live-spin .8s linear infinite; }
+  .live-toast.is-ready .dot { border: 0; background: var(--green); animation: none; width: 8px; height: 8px; margin: 0 3px; }
+  .live-toast.is-hidden { opacity: 0; transform: translateY(12px); pointer-events: none; }
+  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  @media (max-width: 720px) { .live { padding: 56px 16px; } .live-card { padding: 18px; border-radius: 22px; } .live-input { font-size: 18px; } textarea.live-input { font-size: 16px; } .live-out { font-size: 16px; } }
+  @media (max-width: 520px) { .live-row { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) 42px; gap: 8px; font-size: 13px; } }
+  @media (prefers-reduced-motion: reduce) { .live-status .dot, .live-toast .dot, .live-skel { animation: none; } }
+
+  .gk-verdict { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 16px; margin-bottom: 16px; background: var(--green-soft); color: var(--green-ink); }
+  .gk-verdict.is-toxic { background: #fce8e6; color: #a50e0e; }
+  .gk-verdict .ic { font-size: 26px; line-height: 1; }
+  .gk-verdict b { display: block; font-size: 19px; font-weight: 600; }
+  .gk-verdict small { font-size: 13px; opacity: .85; }
+  .gk-toxic .bar i { background: #ee675c; }
+  .gk-meter { position: relative; height: 10px; border-radius: 99px; background: linear-gradient(90deg, #c4eed0, #fdd663 50%, #f6aea9); margin: 6px 0 34px; }
+  .gk-meter .needle { position: absolute; top: -5px; width: 4px; height: 20px; margin-left: -2px; border-radius: 2px; background: var(--text-strong); transition: left .25s; }
+  .gk-meter .thr { position: absolute; top: 14px; font-size: 11px; color: var(--text-secondary); transform: translateX(-50%); white-space: nowrap; }
+  .gk-meter .thr::before { content: ""; position: absolute; left: 50%; top: -16px; width: 1px; height: 14px; background: var(--text-secondary); }
 </style>
 </head>
 <body>
@@ -651,6 +710,7 @@
       </details>
     </div>
     <div class="nav-links">
+      <a href="#live-demo">Live demo</a>
       <a href="#screenshots">Screenshots</a>
       <a href="#install">Install</a>
       <a href="#usage">Usage</a>
@@ -683,6 +743,34 @@
     <div class="chip-row" id="demoChips"><span class="verdict bad">Flagged · Insult</span><span class="verdict score">score 0.99</span></div>
   </div>
 </header>
+
+<div class="live" id="live-demo" role="region" aria-labelledby="live-title">
+  <div class="live-inner">
+    <div class="section-head">
+      <div class="kicker">Live demo</div>
+      <h2 id="live-title">Try the real model, right here</h2>
+      <p>This is the actual Gatekeeper library, compiled to WebAssembly and running in your browser. Type a message, in English or Indian languages, and see whether it would be flagged. Your text never leaves this page.</p>
+    </div>
+    <div class="live-card">
+      <div class="live-status" id="liveStatus" data-state="loading" role="status" aria-live="polite"><span class="dot" aria-hidden="true"></span><span id="liveStatusText">Loading the model (~4 MB)…</span></div>
+      <label class="visually-hidden" for="liveText">Text</label>
+      <input class="live-input" id="liveText" type="text" value="you are a stupid idiot" maxlength="300" autocomplete="off" spellcheck="false" placeholder="Type a message…">
+      <div class="live-examples" id="liveExamples" aria-label="Examples">
+        <button type="button">you are a stupid idiot</button>
+        <button type="button">this movie killed me 😂</button>
+        <button type="button">bhai tu toh kamaal hai 🔥</button>
+        <button type="button">the delivery was late, very bad service</button>
+        <button type="button">shut up you moron</button>
+        <button type="button">कल सुबह मिलते हैं</button>
+      </div>
+      <div id="liveResults" aria-live="polite"></div>
+      <div class="live-foot">
+        <div><div class="live-seg" id="gkSens" aria-label="Sensitivity"><span>Sensitivity</span><button type="button" data-value="STRICT" aria-pressed="false">Strict</button><button type="button" data-value="BALANCED" aria-pressed="true">Balanced</button><button type="button" data-value="RELAXED" aria-pressed="false">Relaxed</button></div></div>
+        <div class="live-meta" id="liveMeta">Updates as you type</div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <section id="features">
   <div class="section-head">
@@ -1220,5 +1308,105 @@ gatekeeper.close()</code></pre>
   });
 })();
 </script>
+
+<a class="live-toast is-hidden" id="liveToast" href="#live-demo"><span class="dot" aria-hidden="true"></span><span id="liveToastText">Loading the live demo model…</span></a>
+<script>
+  function liveEsc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function livePct(x) { var p = x * 100; return (p > 0 && p < 1 ? p.toFixed(1) : Math.round(p)) + "%"; }
+  function liveRow(name, score, scale, top) {
+    return '<div class="live-row' + (top ? " is-top" : "") + '"><span class="n">' + name + '</span><span class="bar"><i style="width:' +
+      Math.max(1, Math.min(100, score / (scale || 1) * 100)).toFixed(1) + '%"></i></span><span class="v">' + livePct(score) + '</span></div>';
+  }
+  function liveSkel(id, n) { var h = ""; for (var i = 0; i < n; i++) h += '<div class="live-skel"></div>'; document.getElementById(id).innerHTML = h; }
+  function liveExamples(set) {
+    document.getElementById("liveExamples").addEventListener("click", function (e) {
+      var b = e.target.closest("button"); if (!b) return; set(b.getAttribute("data-text") || b.textContent);
+    });
+  }
+  function liveSeg(id, onPick) {
+    var box = document.getElementById(id);
+    box.addEventListener("click", function (e) {
+      var b = e.target.closest("button"); if (!b) return;
+      box.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+      onPick(b.getAttribute("data-value"));
+    });
+  }
+
+  var liveText = document.getElementById("liveText");
+  liveText.addEventListener("input", function () { Live.run(); });
+  liveExamples(function (t) { liveText.value = t; Live.run(); });
+
+  var gkSens = "BALANCED";
+  var GK_NAMES = { INSULT: "Insult", PROFANITY: "Profanity", THREAT: "Threat", HATE: "Hate", SEXUAL: "Sexual" };
+  liveSeg("gkSens", function (v) { gkSens = v; Live.run(); });
+  function liveInput() { return [liveText.value, gkSens]; }
+  function liveSkeleton() { liveSkel("liveResults", 4); }
+  function liveRender(v) {
+    var cats = Object.keys(v.categories).map(function (k) { return [k, v.categories[k]]; }).sort(function (a, b) { return b[1] - a[1]; });
+    var top = v.toxic && cats.length ? GK_NAMES[cats[0][0]] || cats[0][0] : null;
+    document.getElementById("liveResults").innerHTML =
+      '<div class="gk-verdict' + (v.toxic ? " is-toxic" : "") + '"><span class="ic" aria-hidden="true">' + (v.toxic ? "🛡️" : "✅") + '</span><div><b>' +
+      (v.toxic ? "Flagged" + (top ? " · " + top : "") : "Looks fine") + '</b><small>Toxicity score ' + v.score.toFixed(2) + ' · flagged at ' + v.threshold.toFixed(2) + ' and above</small></div></div>' +
+      '<div class="gk-meter" aria-hidden="true"><span class="needle" style="left:' + (v.score * 100).toFixed(1) + '%"></span><span class="thr" style="left:' + (v.threshold * 100) + '%">threshold</span></div>' +
+      '<p class="live-label">Categories</p><div class="live-rows' + (v.toxic ? " gk-toxic" : "") + '">' + cats.map(function (c, i) { return liveRow(GK_NAMES[c[0]] || c[0], c[1], 1, v.toxic && i === 0); }).join("") + '</div>';
+  }
+
+  // Live demo: the page loads first, then the model loads quietly in a Web Worker (demo/worker.js).
+  var Live = (function () {
+    var status = document.getElementById("liveStatus"), statusText = document.getElementById("liveStatusText");
+    var meta = document.getElementById("liveMeta");
+    var toast = document.getElementById("liveToast"), toastText = document.getElementById("liveToastText");
+    var worker = null, ready = false, nextId = 0, lastId = -1, t0 = 0;
+
+    function fmtMs(ms) { return ms < 1 ? ms.toFixed(2) + " ms" : ms < 10 ? ms.toFixed(1) + " ms" : Math.round(ms) + " ms"; }
+    function setStatus(state, text) { status.setAttribute("data-state", state); statusText.textContent = text; }
+
+    function run() {
+      if (!ready) return;
+      var a = liveInput();
+      lastId = nextId++;
+      worker.postMessage({ id: lastId, input: a[0], option: a[1] || "" });
+    }
+
+    function fail(message) {
+      setStatus("error", "The live demo can't run in this browser. It needs WebAssembly GC (Chrome 119+, Firefox 120+, Safari 18.2+).");
+      toast.classList.add("is-hidden");
+      if (message && window.console) console.warn("Live demo:", message);
+    }
+
+    function start() {
+      if (worker) return;
+      if (typeof Worker === "undefined" || typeof WebAssembly === "undefined") return fail("no Worker/WebAssembly");
+      toast.classList.remove("is-hidden");
+      t0 = performance.now();
+      try { worker = new Worker("demo/worker.js", { type: "module" }); } catch (e) { return fail(e.message); }
+      worker.onerror = function (e) { fail(e.message); };
+      worker.onmessage = function (e) {
+        var d = e.data;
+        if (d.type === "ready") {
+          ready = true;
+          setStatus("ready", "Model ready · loaded in " + ((performance.now() - t0) / 1000).toFixed(1) + " s · running in your browser");
+          toast.classList.add("is-ready");
+          toastText.textContent = "Live demo ready · try it →";
+          setTimeout(function () { toast.classList.add("is-hidden"); }, 4000);
+          run();
+        } else if (d.type === "error") {
+          fail(d.message);
+        } else if (d.type === "result" && d.id === lastId) {
+          liveRender(d.data);
+          meta.textContent = fmtMs(d.ms) + " · computed on this device, nothing sent";
+        }
+      };
+    }
+
+    toast.addEventListener("click", function () { setTimeout(function () { toast.classList.add("is-hidden"); }, 600); });
+    liveSkeleton();
+    // Never compete with the page itself: wait for load, then an idle moment.
+    function later() { (window.requestIdleCallback || function (f) { setTimeout(f, 300); })(start, { timeout: 2000 }); }
+    if (document.readyState === "complete") later(); else window.addEventListener("load", later);
+    return { run: run };
+  })();
+</script>
+
 </body>
 </html>
