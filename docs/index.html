@@ -523,15 +523,132 @@
   footer .foot-links a { font-size: 14px; }
   footer .foot-links a:hover { color: var(--link); text-decoration: underline; }
   footer .copyright { font-size: 13px; }
+
+  /* ===== Hub navigation, creator note, more models ===== */
+  .nav-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+  .nav-back {
+    display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px 0 10px; border-radius: 96px;
+    background: var(--tonal); color: var(--accent) !important; font-size: 14px; font-weight: 500; white-space: nowrap;
+    transition: background .2s;
+  }
+  .nav-back:hover { background: var(--tonal-hover); text-decoration: none !important; }
+  .nav-back svg { width: 18px; height: 18px; flex: none; transition: transform .2s; }
+  .nav-back:hover svg { transform: translateX(-2px); }
+  .nav-back:focus-visible, .creator-card:focus-visible, .model-tile:focus-visible { outline: 3px solid var(--green); outline-offset: 3px; }
+  .nav-sep { width: 1px; height: 24px; background: var(--border); flex: none; }
+  @media (max-width: 520px) {
+    .nav-back { width: 36px; padding: 0; justify-content: center; }
+    .nav-back span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .nav-left { gap: 10px; }
+    .nav-brand { font-size: 19px; }
+  }
+  .hero .eyebrow a { color: inherit; text-decoration: underline; text-decoration-color: rgba(7, 48, 66, .35); text-underline-offset: 3px; }
+
+  .creator-card {
+    display: block; max-width: 880px; margin: 0 auto; padding: 56px 56px 40px; border-radius: 32px;
+    background: #073042; color: #e8eaed !important; text-decoration: none !important; position: relative; overflow: hidden;
+    transition: box-shadow .25s, transform .25s;
+  }
+  .creator-card::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background-image: radial-gradient(rgba(61, 220, 132, .16) 1.2px, transparent 1.3px); background-size: 26px 26px;
+    -webkit-mask-image: linear-gradient(135deg, transparent 45%, #000); mask-image: linear-gradient(135deg, transparent 45%, #000);
+  }
+  .creator-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(7, 48, 66, .35); }
+  .creator-kicker { position: relative; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: #3ddc84; margin-bottom: 20px; }
+  .creator-kicker svg { width: 18px; height: 18px; }
+  .creator-quote { position: relative; margin: 0; font-size: clamp(28px, 4.4vw, 44px); font-weight: 600; line-height: 1.18; letter-spacing: -0.015em; color: #fff; }
+  .creator-quote mark { background: linear-gradient(transparent 62%, rgba(61, 220, 132, .55) 62%); color: inherit; }
+  .creator-sub { position: relative; margin: 18px 0 0; font-size: 18px; line-height: 1.55; color: #bdc1c6; max-width: 640px; }
+  .creator-sign { position: relative; display: flex; align-items: center; gap: 14px; margin-top: 36px; padding-top: 24px; border-top: 1px solid rgba(255, 255, 255, .14); flex-wrap: wrap; }
+  .creator-sign img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 3px #3ddc84; }
+  .creator-sign b { display: block; font-size: 17px; font-weight: 600; color: #fff; }
+  .creator-sign small { display: block; font-size: 14px; color: #bdc1c6; }
+  .creator-go {
+    margin-left: auto; display: inline-flex; align-items: center; gap: 6px; height: 44px; padding: 0 20px; border-radius: 96px;
+    background: #3ddc84; color: #073042; font-size: 15px; font-weight: 600; transition: gap .2s;
+  }
+  .creator-card:hover .creator-go { gap: 10px; }
+  @media (max-width: 640px) {
+    .creator-card { padding: 36px 24px 28px; border-radius: 24px; }
+    .creator-go { margin-left: 0; width: 100%; justify-content: center; }
+  }
+
+  .model-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  @media (max-width: 1020px) { .model-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .model-grid { grid-template-columns: 1fr; } }
+  .model-tile {
+    display: flex; gap: 14px; align-items: flex-start; padding: 20px; border-radius: 24px; background: var(--card-bg);
+    color: var(--text) !important; text-decoration: none !important; transition: box-shadow .2s, transform .2s;
+  }
+  .model-tile { position: relative; }
+  .model-tile.is-here { box-shadow: inset 0 0 0 2px #3ddc84; }
+  .model-tile .here { position: absolute; top: 14px; right: 14px; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 96px; background: #c4eed0; color: #072711; }
+  a.model-tile:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+  .model-tile .emo { flex: none; width: 44px; height: 44px; border-radius: 14px; background: #073042; display: grid; place-items: center; font-size: 22px; }
+  .model-tile b { display: block; font-size: 17px; font-weight: 600; color: var(--text-strong); }
+  .model-tile .job { display: block; font-size: 12px; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; color: var(--text-secondary); margin: 2px 0 6px; }
+  .model-tile .what { display: block; font-size: 14px; line-height: 1.45; color: var(--text-secondary); }
+  .all-models-cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 40px; }
+  .all-models-cta .btn svg { width: 18px; height: 18px; }
+
+  /* ===== Model switcher (next to the logo) ===== */
+  .nav-cta { white-space: nowrap; }
+  @media (max-width: 960px) { .nav-links { display: none; } }
+  .nav-switch { position: relative; }
+  .nav-switch summary {
+    list-style: none; cursor: pointer; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%;
+    color: var(--text-secondary); transition: background .2s, color .2s;
+  }
+  .nav-switch summary::-webkit-details-marker { display: none; }
+  .nav-switch summary:hover, .nav-switch[open] summary { background: var(--tonal); color: var(--text-strong); }
+  .nav-switch summary:focus-visible { outline: 3px solid var(--green); outline-offset: 2px; }
+  .nav-switch summary svg { width: 18px; height: 18px; transition: transform .2s; }
+  .nav-switch[open] summary svg { transform: rotate(180deg); }
+  .nav-switch-menu {
+    position: absolute; top: calc(100% + 10px); left: -8px; width: 300px; max-width: calc(100vw - 32px); padding: 8px;
+    border-radius: 20px; background: var(--card-bg); border: 1px solid var(--border); box-shadow: var(--shadow); z-index: 200;
+  }
+  .nav-switch-head { padding: 8px 12px 6px; font-size: 12px; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; color: var(--text-secondary); }
+  .nav-switch-menu a {
+    display: flex; align-items: center; gap: 12px; padding: 8px 12px; border-radius: 12px; color: var(--text) !important;
+    text-decoration: none !important; font-size: 15px;
+  }
+  .nav-switch-menu a:hover, .nav-switch-menu a:focus-visible { background: var(--tonal); outline: none; }
+  .nav-switch-menu a .e { flex: none; width: 32px; height: 32px; border-radius: 10px; background: #073042; display: grid; place-items: center; font-size: 16px; }
+  .nav-switch-menu a b { display: block; font-weight: 600; color: var(--text-strong); }
+  .nav-switch-menu a small { display: block; font-size: 12px; color: var(--text-secondary); }
+  .nav-switch-menu a[aria-current] { box-shadow: inset 0 0 0 2px #3ddc84; }
+  .nav-switch-menu a.all { justify-content: center; margin-top: 6px; border-top: 1px solid var(--border); border-radius: 0 0 12px 12px; padding-top: 12px; font-weight: 500; color: var(--accent) !important; }
+  @media (max-width: 520px) { .nav-switch-menu { position: fixed; top: 64px; left: 16px; right: 16px; width: auto; max-width: none; } }
 </style>
 </head>
 <body>
 
 <nav>
   <div class="nav-inner">
-    <div class="nav-brand">
+    <div class="nav-left">
+      <a class="nav-back" href="https://rajumark.github.io/hoverfly/#models" title="All Hoverfly models"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg><span>All models</span></a>
+      <span class="nav-sep" aria-hidden="true"></span>
+      <a class="nav-brand" href="#top" aria-label="Gatekeeper, back to top">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="1" y="1" width="22" height="22" rx="7" fill="var(--accent)"/><path d="M12 5.5 7 7.5v3.8c0 3 2.1 5.4 5 6.4 2.9-1 5-3.4 5-6.4V7.5Z" fill="#fff"/><path d="m9.8 11.8 1.6 1.6 2.9-3" stroke="var(--accent)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Gatekeeper
+    </a>
+      <details class="nav-switch">
+        <summary aria-label="Switch to another Hoverfly model" title="Other models"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+        <div class="nav-switch-menu">
+        <div class="nav-switch-head">Hoverfly models</div>
+        <a href="https://rajumark.github.io/moji/"><span class="e" aria-hidden="true">🙂</span><span><b>Moji</b><small>Emoji suggestions</small></span></a>
+        <a href="https://rajumark.github.io/beacon/"><span class="e" aria-hidden="true">🗼</span><span><b>Beacon</b><small>Language detection</small></span></a>
+        <a href="https://rajumark.github.io/comma/"><span class="e" aria-hidden="true">✍️</span><span><b>Comma</b><small>Punctuation</small></span></a>
+        <a href="https://rajumark.github.io/comeback/"><span class="e" aria-hidden="true">💬</span><span><b>Comeback</b><small>Smart replies</small></span></a>
+        <a href="https://rajumark.github.io/emotion/"><span class="e" aria-hidden="true">😊</span><span><b>Emotion</b><small>Emotion detection</small></span></a>
+        <a href="#top" aria-current="page"><span class="e" aria-hidden="true">🛡️</span><span><b>Gatekeeper</b><small>Toxicity detection</small></span></a>
+        <a href="https://rajumark.github.io/hideout/"><span class="e" aria-hidden="true">🏚️</span><span><b>Hideout</b><small>Personal info hiding</small></span></a>
+        <a href="https://rajumark.github.io/chalk/"><span class="e" aria-hidden="true">🖍️</span><span><b>Chalk</b><small>Doodle recognition</small></span></a>
+        <a class="all" href="https://rajumark.github.io/hoverfly/#models">See all models on Hoverfly →</a>
+        </div>
+      </details>
     </div>
     <div class="nav-links">
       <a href="#screenshots">Screenshots</a>
@@ -547,8 +664,8 @@
   </div>
 </nav>
 
-<header class="hero">
-  <div class="eyebrow">Gatekeeper · by Hoverfly</div>
+<header class="hero" id="top">
+  <div class="eyebrow">Gatekeeper · by <a href="https://rajumark.github.io/hoverfly/">Hoverfly</a></div>
   <h1>Catch toxic messages<br>before anyone reads them.</h1>
   <p class="tagline">Check a chat message, comment or review for abuse, hate, threats and sexual harassment on the device itself (Android, iOS, desktop or the web), in about a millisecond. English, Hindi, Tamil, Telugu, Malayalam, Kannada, Hinglish and more, in a 4 MB library.</p>
   <div class="hero-actions">
@@ -897,13 +1014,50 @@ gatekeeper.close()</code></pre>
   <div class="faq-item"><h4>Can you build a model for my app?</h4><p>Yes. Hoverfly trains custom on-device models for your language, domain or task and ships them as a small library like this one. Get in touch on the same email or number.</p></div>
 </section>
 
+<section id="creator" aria-label="A note from the creator">
+  <a class="creator-card" href="https://rajumark.github.io/">
+    <div class="creator-kicker"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.1 0 3.6 1.1 4.3 2.4.7-1.3 2.2-2.4 4.3-2.4 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z"/></svg> A note from the creator</div>
+    <p class="creator-quote">Built by a developer, <mark>for developers.</mark></p>
+    <p class="creator-sub">Every model here started as a problem I hit in my own apps. I made them small, private and free to start, so you can spend your time on the part your users will love.</p>
+    <div class="creator-sign">
+      <img src="https://rajumark.github.io/raju_profile_small_image.png" alt="" width="52" height="52" loading="lazy">
+      <div><b>Raju Shingadiya</b><small>Android developer · creator of Hoverfly</small></div>
+      <span class="creator-go">Meet the maker <span aria-hidden="true">→</span></span>
+    </div>
+  </a>
+</section>
+
+<section id="all-models">
+  <div class="section-head">
+    <div class="kicker">The Hoverfly family</div>
+    <h2>Gatekeeper is one of eight.</h2>
+    <p>Eight small on-device models, one job each. Same install, same free tier, and the same promise: nothing leaves the device.</p>
+  </div>
+  <div class="model-grid">
+    <a class="model-tile" href="https://rajumark.github.io/moji/"><span class="emo" aria-hidden="true">🙂</span><span><b>Moji</b><span class="job">Emoji suggestions</span><span class="what">The right emoji for any message, in 22 languages.</span></span></a>
+    <a class="model-tile" href="https://rajumark.github.io/beacon/"><span class="emo" aria-hidden="true">🗼</span><span><b>Beacon</b><span class="job">Language detection</span><span class="what">Language and script of any text, Hinglish included.</span></span></a>
+    <a class="model-tile" href="https://rajumark.github.io/comma/"><span class="emo" aria-hidden="true">✍️</span><span><b>Comma</b><span class="job">Punctuation</span><span class="what">Turns voice-typed text into readable sentences.</span></span></a>
+    <a class="model-tile" href="https://rajumark.github.io/comeback/"><span class="emo" aria-hidden="true">💬</span><span><b>Comeback</b><span class="job">Smart replies</span><span class="what">Three tap-to-send replies for every message.</span></span></a>
+    <a class="model-tile" href="https://rajumark.github.io/emotion/"><span class="emo" aria-hidden="true">😊</span><span><b>Emotion</b><span class="job">Emotion detection</span><span class="what">28 emotions and an overall mood, per message.</span></span></a>
+    <div class="model-tile is-here" aria-current="page"><span class="emo" aria-hidden="true">🛡️</span><span><b>Gatekeeper</b><span class="job">Toxicity detection</span><span class="what">Catches abuse and threats in Indian chat.</span></span><span class="here">You're here</span></div>
+    <a class="model-tile" href="https://rajumark.github.io/hideout/"><span class="emo" aria-hidden="true">🏚️</span><span><b>Hideout</b><span class="job">Personal info hiding</span><span class="what">Hides phones, UPI, Aadhaar and more.</span></span></a>
+    <a class="model-tile" href="https://rajumark.github.io/chalk/"><span class="emo" aria-hidden="true">🖍️</span><span><b>Chalk</b><span class="job">Doodle recognition</span><span class="what">Guesses 345 things from pen strokes, live.</span></span></a>
+  </div>
+  <div class="all-models-cta">
+    <a class="btn btn-primary" href="https://rajumark.github.io/hoverfly/#models"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg> View all models</a>
+    <a class="btn btn-secondary" href="https://rajumark.github.io/hoverfly/">Hoverfly home</a>
+  </div>
+</section>
+
 <footer>
   <div class="foot-links">
+    <a href="https://rajumark.github.io/hoverfly/#models">All models</a>
     <a href="https://github.com/rajumark/gatekeeper">GitHub</a>
     <a href="https://github.com/rajumark/gatekeeper/blob/main/LICENSE">License</a>
     <a href="https://rajumark.github.io/moji/">Moji</a>
     <a href="https://rajumark.github.io/beacon/">Beacon</a>
     <a href="https://rajumark.github.io/comeback/">Comeback</a>
+    <a href="https://rajumark.github.io/">Creator</a>
   </div>
   <div class="copyright">© 2026 Hoverfly · Gatekeeper</div>
 </footer>
@@ -1052,6 +1206,17 @@ gatekeeper.close()</code></pre>
   box.addEventListener('close', () => {
     document.documentElement.style.overflow = '';
     group[index]?.focus({ preventScroll: true });
+  });
+})();
+</script>
+<script>
+// Model switcher: close on outside click, on Escape, and after choosing.
+(function () {
+  var sw = document.querySelector('.nav-switch');
+  if (!sw) return;
+  document.addEventListener('click', function (e) { if (sw.open && !sw.contains(e.target)) sw.open = false; });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && sw.open) { sw.open = false; sw.querySelector('summary').focus(); }
   });
 })();
 </script>
