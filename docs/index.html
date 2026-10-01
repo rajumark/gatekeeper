@@ -623,13 +623,13 @@
   @media (max-width: 520px) { .nav-switch-menu { position: fixed; top: 64px; left: 16px; right: 16px; width: auto; max-width: none; } }
 
   /* Live demo: the real library (Kotlin/Wasm) in a Web Worker. A div, not a section, so the section bands below keep their colours. */
-  .live { padding: 72px 22px; background: var(--accent); box-shadow: 0 0 0 100vmax var(--accent); clip-path: inset(0 -100vmax); }
+  .live-band { padding: 72px 22px; background: var(--accent); box-shadow: 0 0 0 100vmax var(--accent); clip-path: inset(0 -100vmax); }
   .live-inner { max-width: 980px; margin: 0 auto; }
-  .live .section-head { margin-bottom: 36px; }
-  .live .section-head .kicker { color: var(--green); display: inline-flex; align-items: center; gap: 8px; }
-  .live .section-head .kicker::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 4px rgba(61, 220, 132, .25); }
-  .live .section-head h2 { color: #fff; }
-  .live .section-head p { color: rgba(255, 255, 255, .78); }
+  .live-band .section-head { margin-bottom: 36px; }
+  .live-band .section-head .kicker { color: var(--green); display: inline-flex; align-items: center; gap: 8px; }
+  .live-band .section-head .kicker::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 4px rgba(61, 220, 132, .25); }
+  .live-band .section-head h2 { color: #fff; }
+  .live-band .section-head p { color: rgba(255, 255, 255, .78); }
   .live-card { max-width: 760px; margin: 0 auto; background: var(--card-bg); border-radius: 28px; padding: 28px; box-shadow: 0 12px 40px rgba(0, 0, 0, .25); }
   .live-status { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-secondary); background: var(--bg-subtle); border-radius: 980px; padding: 6px 12px 6px 10px; margin-bottom: 16px; }
   .live-status .dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--border); border-top-color: var(--accent); animation: live-spin .8s linear infinite; flex: none; }
@@ -666,7 +666,7 @@
   .live-toast.is-ready .dot { border: 0; background: var(--green); animation: none; width: 8px; height: 8px; margin: 0 3px; }
   .live-toast.is-hidden { opacity: 0; transform: translateY(12px); pointer-events: none; }
   .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-  @media (max-width: 720px) { .live { padding: 56px 16px; } .live-card { padding: 18px; border-radius: 22px; } .live-input { font-size: 18px; } textarea.live-input { font-size: 16px; } .live-out { font-size: 16px; } }
+  @media (max-width: 720px) { .live-band { padding: 56px 16px; } .live-card { padding: 18px; border-radius: 22px; } .live-input { font-size: 18px; } textarea.live-input { font-size: 16px; } .live-out { font-size: 16px; } }
   @media (max-width: 520px) { .live-row { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) 42px; gap: 8px; font-size: 13px; } }
   @media (prefers-reduced-motion: reduce) { .live-status .dot, .live-toast .dot, .live-skel { animation: none; } }
 
@@ -744,7 +744,7 @@
   </div>
 </header>
 
-<div class="live" id="live-demo" role="region" aria-labelledby="live-title">
+<div class="live-band" id="live-demo" role="region" aria-labelledby="live-title">
   <div class="live-inner">
     <div class="section-head">
       <div class="kicker">Live demo</div>
