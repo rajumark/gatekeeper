@@ -196,7 +196,7 @@ See [PUBLISHING.md](PUBLISHING.md).
 
 ## More Hoverfly models
 
-Gatekeeper is one of eight small on-device models by [Hoverfly](https://rajumark.github.io/hoverfly/), all with the same install, the same free tier and nothing sent to a server.
+Gatekeeper is one of nine small on-device models by [Hoverfly](https://rajumark.github.io/hoverfly/), all with the same install, the same free tier and nothing sent to a server.
 
 | Model | What it does | Source |
 |---|---|---|
@@ -207,6 +207,7 @@ Gatekeeper is one of eight small on-device models by [Hoverfly](https://rajumark
 | 😊 [Emotion](https://rajumark.github.io/emotion/) | 28 emotions and an overall mood per message | [GitHub](https://github.com/rajumark/emotion) |
 | 🏚️ [Hideout](https://rajumark.github.io/hideout/) | Finds and hides phone numbers, UPI, Aadhaar and more | [GitHub](https://github.com/rajumark/hideout) |
 | 🖍️ [Chalk](https://rajumark.github.io/chalk/) | Doodle recognition, 345 things from pen strokes | [GitHub](https://github.com/rajumark/chalk) |
+| 📸 [Retake](https://rajumark.github.io/retake/) | Photo quality check: blur, dark, bright, glare, noise, finger | [GitHub](https://github.com/rajumark/retake) |
 
 See them all on the [Hoverfly website](https://rajumark.github.io/hoverfly/#models).
 
